@@ -2,7 +2,7 @@
 layout: post
 title: docker使用速览
 date: 2018-05-15 20:34
-tags: [docker, linux]
+tags: [Reference]
 feature-img: "https://images.pexels.com/photos/163130/keyboard-black-notebook-input-163130.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
 ---
 

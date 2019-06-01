@@ -2,7 +2,7 @@
 layout: post
 title: win使用python读取access数据
 date: 2017-07-21 12:57:46.057000
-tags: [Python]
+tags: [HowTo]
 feature-img: "assets/img/pexels/startrails.jpg"
 ---
 

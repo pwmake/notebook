@@ -2,7 +2,7 @@
 layout: post
 title: OpenVPN的部署与使用
 date: 2018-06-14
-tags: [Skill, VPN]
+tags: [HowTo]
 feature-img: https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?cs=srgb&dl=abstract-access-close-up-1089438.jpg&fm=jpg
 ---
 

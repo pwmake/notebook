@@ -2,7 +2,7 @@
 title: Git常用命令
 layout: post
 date: 2016-07-13 00:00:00
-tags: [git]
+tags: [Reference]
 feature-img: "https://images.pexels.com/photos/450035/pexels-photo-450035.jpeg?cs=srgb&dl=business-computer-connection-450035.jpg&fm=jpg"
 ---
 

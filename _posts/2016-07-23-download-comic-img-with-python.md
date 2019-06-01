@@ -2,7 +2,7 @@
 title: python抓取漫画
 layout: post
 date: 2016-07-23 00:00:00
-tags: [Python]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/16516/pexels-photo.jpg?cs=srgb&dl=art-close-up-comic-16516.jpg&fm=jpg"
 ---
 

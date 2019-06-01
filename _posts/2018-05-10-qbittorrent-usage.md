@@ -2,7 +2,7 @@
 layout: post
 title: qBittorrent下载の道
 date: 2018-05-10
-tags: [skill]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/436781/pexels-photo-436781.jpeg?cs=srgb&dl=access-accessories-blur-436781.jpg&fm=jpg"
 ---
 

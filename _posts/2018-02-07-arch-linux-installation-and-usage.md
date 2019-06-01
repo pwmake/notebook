@@ -2,7 +2,7 @@
 layout: post
 title: Arch Linux安装与使用
 date: 2018-02-07
-tags: [Linux]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/34658/pexels-photo.jpg?cs=srgb&dl=blogging-computer-desk-34658.jpg&fm=jpg"
 ---
 

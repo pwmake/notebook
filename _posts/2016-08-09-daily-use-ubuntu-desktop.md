@@ -2,7 +2,7 @@
 title: ubuntu主力系统的日常
 layout: post
 date: 2016-08-09 00:00:00
-tags: [Skill]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/461497/pexels-photo-461497.jpeg?cs=srgb&dl=bear-business-computer-461497.jpg&fm=jpg"
 ---
 

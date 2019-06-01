@@ -2,7 +2,7 @@
 layout: post
 title: 内网穿透与VPN
 date: 2018-06-11
-tags: [Skill, Linux, VPN]
+tags: [HowTo]
 feature-img: https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?cs=srgb&dl=abstract-access-close-up-1089438.jpg&fm=jpg
 ---
 

@@ -2,7 +2,7 @@
 title: SQLite快速上手
 layout: post
 date: 2016-07-31 00:00:00
-tags: [database]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/163130/keyboard-black-notebook-input-163130.jpeg?cs=srgb&dl=arrows-blur-close-up-163130.jpg&fm=jpg"
 ---
 

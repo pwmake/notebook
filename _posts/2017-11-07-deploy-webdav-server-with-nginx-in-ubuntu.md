@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Nginx搭建webdav服务
-tags: [Skill]
+tags: [HowTo]
 date: 2017-11-07 11:24:35
 feature-img: "https://images.pexels.com/photos/167259/pexels-photo-167259.jpeg?cs=srgb&dl=blur-blurry-close-up-167259.jpg&fm=jpg"
 ---

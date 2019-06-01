@@ -2,7 +2,7 @@
 layout: post
 title: centos vsftp 配置
 date: 2017-07-21 12:51:14.075000
-tags: [Linux]
+tags: [HowTo]
 feature-img: "assets/img/pexels/startrails.jpg"
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 部署SVN Server
-tags: [Linux]
+tags: [HowTo]
 date: 2017-02-20 22:05:14
 layout: post
 feature-img: "assets/img/pexels/startrails.jpg"

@@ -2,7 +2,7 @@
 layout: post
 title: Ubuntu 开启历史命令记录
 date: 2018-06-27
-tags: [Linux]
+tags: [HowTo]
 feature-img: https://images.pexels.com/photos/430208/pexels-photo-430208.jpeg?cs=srgb&dl=camera-equipment-pavement-430208.jpg&fm=jpg
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title: v2ray使用小结
 date: 2018-04-09
-tags: [Skill, V2ray, Router, Freedom]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/255514/pexels-photo-255514.jpeg?cs=srgb&dl=aeroplane-aircraft-airplane-255514.jpg&fm=jpg"
 ---
 

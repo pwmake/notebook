@@ -2,7 +2,7 @@
 layout: post
 title: LEDE/OpenWRT使用概览
 date: 2018-05-01
-tags: [OpenWRT, LEDE, Router, Skill]
+tags: [Reference]
 feature-img: "https://images.pexels.com/photos/159304/network-cable-ethernet-computer-159304.jpeg?cs=srgb&dl=cables-close-up-connection-159304.jpg&fm=jpg"
 ---
 

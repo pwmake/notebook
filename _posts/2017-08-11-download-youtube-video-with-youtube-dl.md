@@ -2,7 +2,7 @@
 layout: post
 title: youtube-dl使用示例教程
 date: 2017-08-11
-tags: [Skill]
+tags: [HowTo]
 feature-img: "https://images.pexels.com/photos/34407/pexels-photo.jpg?cs=srgb&dl=app-apple-hand-34407.jpg&fm=jpg"
 ---
 
