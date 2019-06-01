@@ -2,7 +2,7 @@
 layout: post
 title: django部署的3种方法
 date: 2017-09-12 14:17:57
-tags: [Django]
+tags: [Reference]
 feature-img: "https://images.pexels.com/photos/436781/pexels-photo-436781.jpeg?cs=srgb&dl=access-accessories-blur-436781.jpg&fm=jpg"
 ---
 

@@ -2,7 +2,7 @@
 title: django基于类的视图详解
 layout: post
 date: 2017-04-13 15:41:33
-tags: [Django]
+tags: [Reference]
 feature-img: "https://images.pexels.com/photos/248515/pexels-photo-248515.png?cs=srgb&dl=code-coding-computer-248515.jpg&fm=jpg"
 ---
 

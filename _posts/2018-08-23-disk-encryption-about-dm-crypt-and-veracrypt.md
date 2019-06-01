@@ -2,7 +2,7 @@
 layout: post
 title: VeraCrypt 与 dm-crypt 磁盘加密
 date: 2018-08-23
-tags: [HowTO]
+tags: [HowTo]
 feature-img: https://images.pexels.com/photos/721480/pexels-photo-721480.jpeg?cs=srgb&dl=blur-cabinet-door-721480.jpg&fm=jpg
 ---
 
