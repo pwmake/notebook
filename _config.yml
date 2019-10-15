@@ -2,13 +2,13 @@
 baseurl: ""
 url: "http://zshmobi.com"
 title: ZshMobi # site's title
-description: "Jeff's NoteBook" # used by search engines
+description: "zshmobi personal blog" # used by search engines
 
 
 # THEME-SPECIFIC CONFIGURATION
 theme_settings:
   # Meta
-  title: Jeff's NoteBook # blog's title
+  title: ZshMobi # blog's title
   avatar: assets/img/avatar.png
   favicon: assets/favicon.png
   gravatar: # Email MD5 hash
