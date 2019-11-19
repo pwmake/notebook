@@ -1,7 +1,7 @@
 ---
 layout: post
-title: HowTo - DNS Master-Slave Deployment
-date: 2019-11-18
+title: How To Deploy DNS Master-Slave Service
+date: 2019-09-27
 tags: [HowTo]
 ---
 
