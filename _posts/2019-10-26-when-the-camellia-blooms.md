@@ -3,7 +3,7 @@ layout: post
 title: When the Camellia Blooms
 date: 2019-10-26
 tags: [TVs]
-feature-img: "https://sm.ms/image/kYDfnNmuC7jxdVb"
+feature-img: "https://i.loli.net/2019/11/23/FkNSZjfzQ5yRYG8.jpg"
 ---
 
 It took a whole Saturday night to watch this Korean TV show, which was crazy for me.
