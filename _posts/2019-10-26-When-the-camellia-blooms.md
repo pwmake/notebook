@@ -12,4 +12,4 @@ I must admit this soap TV show reminds me of the feeling you fall in love with s
 
 I am looking forward to the second season, wondering what happens to them.
 
-Click [HERE](https://www.themoviedb.org/tv/93097) for more inforation about this TV show.
+Click [HERE](https://www.themoviedb.org/tv/93097) for more information about this TV show.
