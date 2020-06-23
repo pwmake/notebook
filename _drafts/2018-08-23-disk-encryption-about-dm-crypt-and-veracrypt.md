@@ -76,19 +76,23 @@ $ cryptsetup --cipher aes-xts-plain64 --key-size 512 --hash sha512 --iter-time 1
 password: # 设置密码
 
 # 打开加密后的文件容器
-$ cryptsetup open --type luks /root/luks.vol fuckme
+$ cryptsetup open --type luks /root/luks.vol Sparkle
 # 或者
-$ cryptsetup luksOpen /root/luks.vol fuckme
+$ cryptsetup luksOpen /root/luks.vol Sparkle
+
 # 查看映射情况
 $ ls /dev/mapper
-fuckme
+Sparkle
+
+# 格式化
+$ mkfs.xfs /dev/mapper/Sparkle
 
 # 挂载
-$ mount /dev/mapper/fuckme /mnt
+$ mount /dev/mapper/Sparkle /mnt
 
 # 使用完后卸载
 $ umount /mnt
-$ cryptsetup close fuckme
+$ cryptsetup close Sparkle
 ```
 
 `物理加密` 同理。
