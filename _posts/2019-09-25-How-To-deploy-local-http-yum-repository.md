@@ -2,8 +2,7 @@
 layout: post
 title: How to deploy local http yum repository
 date: 2019-09-25
-tags: [HowTo]
-feature-img: https://images.pexels.com/photos/259698/pexels-photo-259698.jpeg?cs=srgb&dl=abstract-blur-branch-christmas-259698.jpg&fm=jpg
+tags: HowTo
 ---
 
 Installing some RPM packages without WAN network can be painful. Why not deploy a local http yum repository to manage your rpm packages.

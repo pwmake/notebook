@@ -2,8 +2,7 @@
 layout: post
 title: How To Install Arch Linux
 date: 2018-02-07
-tags: [HowTo]
-feature-img: "https://images.pexels.com/photos/34658/pexels-photo.jpg?cs=srgb&dl=blogging-computer-desk-34658.jpg&fm=jpg"
+tags: HowTo
 ---
 
 

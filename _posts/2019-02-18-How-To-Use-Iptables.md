@@ -2,8 +2,7 @@
 title: How To Use Iptables
 layout: post
 date: 2019-02-18
-tags: [HowTo]
-feature-img: "https://images.pexels.com/photos/207142/pexels-photo-207142.jpeg?cs=srgb&dl=brick-wall-bricks-stone-207142.jpg&fm=jpg"
+tags: HowTo
 ---
 
 Iptables is a very important skill that must be learned by every system administrator.

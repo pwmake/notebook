@@ -2,7 +2,7 @@
 layout: post
 title: How To Deploy DNS Master-Slave Service
 date: 2019-09-27
-tags: [HowTo]
+tags: HowTo
 ---
 
 There are some experiment information I should mentioned as blow 

@@ -1,53 +1,123 @@
-# SITE CONFIGURATION
-baseurl: ""
-url: "https://zshmobi.com"
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
 
-# THEME-SPECIFIC CONFIGURATION
-title: ZshMobi                                    # site's title
-description: "A website with blog posts and pages"      # used by search engines
-avatar: assets/img/triangle.png                         # Empty for no avatar in navbar
-favicon: assets/favicon.ico                             # Icon displayed in the tab
+title: ZshMobi
+email: jeff@zshmobi.com
+author: GitHub User
+copyright: Copyright © 1970-2020
+description: >- # this means to ignore newlines until "baseurl:"
+  Write an awesome description for your new site here. You can edit this
+  line in _config.yml. It will appear in your document head meta (for
+  Google search results) and in your feed.xml site description.
 
-# Header and footer text
-header_text: Do not go gentle into that good night                         # Change Blog header text
-header_feature_image: assets/img/pexels/triangular.jpeg
-footer_text: >
-  Powered by <a href="https://jekyllrb.com/">Jekyll</a> with <a href="https://github.com/sylhare/Type-on-Strap">Type on Strap</a>
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://zshmobi.com" # the base hostname & protocol for your site, e.g. http://example.com
+favicon: "" # the favicon for your site
 
-# Blog
-excerpt: true                                           # Or "truncate" (first 250 characters), "false" to disable
-post_navigation: true
-color_image: /assets/img/lineart.png                    # A bit transparent for color posts.
+# Yat date format
+# refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
+yat:
+  date_format: "%d %b %Y"
 
-# Features
-katex: true                                             # Enable if using math markup
-google_analytics:                                       # Tracking ID, e.g. "UA-000000-01"
-disqus_shortname:                                       # Your discus shortname for comments
-layout_variables:                                       # Open the "_sass > base" folder, and open "_variables.scss"
-footer_icons:                                           # In _data/social.yml
-share_buttons:                                          # In _data/social.yml
-authors:                                                # In _data/authors.yml
-language:                                               # In _data/language.yml
+# If you want more debug log, you can set true
+# debug: false
 
-# PAGINATION
-paginate: 5
-paginate_path: "page:num"
+# If you don't want transparent header, you can set false
+# header_transparent: true
 
-# PORTFOLIO
-collections:
-  portfolio:
-    output: true
-    permalink: /:year/:month/:day/:title/
+# Google analytics
+# google_analytics: [Tracking ID]
 
-# BUILD SETTINGS
+# If you want to generate website sitemap, you can set true
+# sitemap: false
+
+# If you want to change site language, you can set lang option
+# lang: "en"  # default lang is en
+
+# Translate languges
+# langs refer to https://cloud.google.com/translate/docs/languages
+# translate_langs:
+#   - lang: en
+#     text: English
+#
+#   - lang: fr
+#     img: https://www.countryflags.io/fr/flat/64.png
+#     text: Franch
+#
+#   - lang: zh-CN
+#     img: https://www.countryflags.io/cn/flat/64.png
+#     text: Chinese(Simple)
+#
+#   - lang: zh-TW
+#     img: https://www.countryflags.io/tw/flat/64.png
+#     text: Chinese(Traditional)
+#
+#   - lang: ja
+#     img: https://www.countryflags.io/jp/flat/64.png
+#     text: Japan
+#
+#   - lang: ko
+#     img: https://www.countryflags.io/kr/flat/64.png
+#     text: Korean
+#
+#   - lang: ru
+#     img: https://www.countryflags.io/ru/flat/64.png
+#     text: Russia
+
+# You can choose a theme color
+# Default theme colors as below:
+# coolblack: #090a0b
+# spacegrey: #353535
+# snowwhite: #ffffff
+#
+# theme_color: snowwhite
+#
+# Custom color as below:
+# theme_color: "#882250"
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+# header_pages:
+#   - index.html
+#   - archives.html
+#   - categories.html
+#   - tags.html
+#   - about.md
+
+# Page default value
+# defaults:
+#   home:
+#     heading: "Your awesome heading"
+#     subheading: "Your awesome subheading"
+#     banner: "Your image url"
+
+# Pagination setting
+# paginate: 5
+
+# Disqus comments
+# disqus:
+#   shortname: "Your Disqus username"
+
+# Gitment comments
+# gitment:
+#   username: "Your GitHub username"
+#   repo: "The repo to store comments"
+#   client_id: "Your client ID"
+#   client_secret: "Your client secret"
+#   redirect_uri: "Your redirect url"   # If you use a custom domain name
+
+# Build settings
+# highlighter: none
 markdown: kramdown
-highlighter: rouge
-sass:
-  sass_dir: _sass
-  style: :compressed
-plugins: [jekyll-paginate, jekyll-seo-tag, jekyll-feed]
-exclude: [".jekyll-cache", "Gemfile", "Gemfile.lock", "type-on-strap.gemspec", "*.gem", ".idea", "vendor/*",
-          "LICENSE", "README.md", "screenshot.png", "assets/package.json", "assets/node_modules", "assets/gulpfile.js"]
+kmarkdown:
+  input: GFM
 
-# theme: type-on-strap                                  # if using the theme as a jekyll theme gem
-remote_theme: sylhare/Type-on-Strap                     # If using as a remote_theme in github
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-spaceship
