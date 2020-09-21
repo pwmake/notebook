@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How To Deploy DNS Master-Slave Service | ZshMobi</title>
+<meta name="generator" content="Jekyll v4.1.1">
+<meta property="og:title" content="How To Deploy DNS Master-Slave Service">
+<meta name="author" content="GitHub User">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="There are some experiment information I should mentioned as blow">
+<meta property="og:description" content="There are some experiment information I should mentioned as blow">
+<link rel="canonical" href="https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html">
+<meta property="og:url" content="https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html">
+<meta property="og:site_name" content="ZshMobi">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-09-27T00:00:00+00:00">
+<script type="application/ld+json">
+{"headline":"How To Deploy DNS Master-Slave Service","dateModified":"2019-09-27T00:00:00+00:00","datePublished":"2019-09-27T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html"},"author":{"@type":"Person","name":"GitHub User"},"url":"https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html","description":"There are some experiment information I should mentioned as blow","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+  <!-- and it's easy to individually load additional languages -->
+  <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://zshmobi.com/feed.xml" title="ZshMobi">
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <!-- identifier -->
+  <meta name="yandex-verification" content="d2b7b73728e5409e">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/">
+  <img class="site-favicon" title="ZshMobi" src="" onerror="this.style.display='none'">
+  ZshMobi
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/about.html">ABOUT</a><a class="page-link" href="/archives.html">ARCHIVES</a><a class="page-link" href="/categories.html">CATEGORIES</a><a class="page-link" href="/">HOME</a><a class="page-link" href="/tags.html">TAGS</a>
+
+
+
+
+<span class="page-link">
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://www.countryflags.io/us/flat/64.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://www.countryflags.io/fr/flat/64.png" title="Franch">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://www.countryflags.io/cn/flat/64.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://www.countryflags.io/jp/flat/64.png" title="Japan">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://www.countryflags.io/kr/flat/64.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://www.countryflags.io/ru/flat/64.png" title="Russia">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: '',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  (function() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.matches('a')) {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">How To Deploy DNS Master-Slave Service</h1>
+  <h3 class="post-subtitle"></h3>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2019-09-27T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> 27 Sep 2019
+    </time>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 8 mins</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/tags.html#HowTo">#HowTo</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>There are some experiment information I should mentioned as blow</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Server Type</th>
+      <th>IP Address</th>
+      <th>Domain Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Master</td>
+      <td>192.168.50.11</td>
+      <td>master.sparkle.local</td>
+    </tr>
+    <tr>
+      <td>Slave</td>
+      <td>192.168.50.22</td>
+      <td>slave.sparkle.local</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="master">Master</h2>
+
+<p>Install required RPM packages.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yum <span class="nb">install</span> <span class="nt">-y</span> <span class="nb">bind </span>bind-utils
+</code></pre></div></div>
+
+<p>Modify the main configuration file saved in <code class="language-plaintext highlighter-rouge">/etc/named.conf</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>options <span class="o">{</span>
+	<span class="c"># add master ip address</span>
+    listen-on port 53 <span class="o">{</span> 127.0.0.1<span class="p">;</span>192.168.50.11<span class="p">;</span> <span class="o">}</span><span class="p">;</span> 
+    <span class="c">#listen-on-v6 port 53 { ::1; };  # disable ipv6 I don't want </span>
+    directory       <span class="s2">"/var/named"</span><span class="p">;</span>
+    dump-file       <span class="s2">"/var/named/data/cache_dump.db"</span><span class="p">;</span>
+    statistics-file <span class="s2">"/var/named/data/named_stats.txt"</span><span class="p">;</span>
+    memstatistics-file <span class="s2">"/var/named/data/named_mem_stats.txt"</span><span class="p">;</span>
+    <span class="c"># define client ip range which can use current dns service</span>
+    allow-query     <span class="o">{</span> localhost<span class="p">;</span>0.0.0.0/0<span class="p">;</span> <span class="o">}</span><span class="p">;</span>
+    <span class="c"># transfer to the slave server</span>
+    allow-transfer     <span class="o">{</span> 192.168.50.22<span class="p">;</span><span class="o">}</span><span class="p">;</span>
+
+    recursion <span class="nb">yes</span><span class="p">;</span>
+
+    dnssec-enable <span class="nb">yes</span><span class="p">;</span>
+    dnssec-validation <span class="nb">yes</span><span class="p">;</span>
+
+    /<span class="k">*</span> Path to ISC DLV key <span class="k">*</span>/
+    bindkeys-file <span class="s2">"/etc/named.iscdlv.key"</span><span class="p">;</span>
+
+    managed-keys-directory <span class="s2">"/var/named/dynamic"</span><span class="p">;</span>
+
+    pid-file <span class="s2">"/run/named/named.pid"</span><span class="p">;</span>
+    session-keyfile <span class="s2">"/run/named/session.key"</span><span class="p">;</span>
+
+<span class="o">}</span><span class="p">;</span>
+
+logging <span class="o">{</span>
+        channel default_debug <span class="o">{</span>
+                file <span class="s2">"data/named.run"</span><span class="p">;</span>
+                severity dynamic<span class="p">;</span>
+        <span class="o">}</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+zone <span class="s2">"."</span> IN <span class="o">{</span>
+        <span class="nb">type </span>hint<span class="p">;</span>
+        file <span class="s2">"named.ca"</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+<span class="c"># define master forward zone configuration</span>
+zone <span class="s2">"sparkle.local"</span> IN <span class="o">{</span>             
+    <span class="nb">type </span>master<span class="p">;</span>                       
+    file <span class="s2">"sparkle.local.zone"</span><span class="p">;</span>
+    notify <span class="nb">yes</span><span class="p">;</span>
+    allow-update <span class="o">{</span> none<span class="p">;</span> <span class="o">}</span><span class="p">;</span>            
+<span class="o">}</span><span class="p">;</span>                                 
+
+<span class="c"># define master reverse zone configuration</span>
+zone <span class="s2">"50.168.192.in-addr.arpa"</span> IN <span class="o">{</span>
+    <span class="nb">type </span>master<span class="p">;</span>                       
+    file <span class="s2">"50.168.192.zone"</span><span class="p">;</span>
+    notify <span class="nb">yes</span><span class="p">;</span>
+    allow-update <span class="o">{</span> none<span class="p">;</span> <span class="o">}</span><span class="p">;</span>            
+<span class="o">}</span><span class="p">;</span>                                 
+
+include <span class="s2">"/etc/named.rfc1912.zones"</span><span class="p">;</span>
+include <span class="s2">"/etc/named.root.key"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Create forward zone configuration saved in  <code class="language-plaintext highlighter-rouge">/var/named/sparkle.local.zone </code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$TTL</span> 86400
+@   IN  SOA     master.sparkle.local. root.sparkle.local. <span class="o">(</span>
+        2011071001  <span class="p">;</span>Serial
+        3600        <span class="p">;</span>Refresh
+        1800        <span class="p">;</span>Retry
+        604800      <span class="p">;</span>Expire
+        86400       <span class="p">;</span>Minimum TTL
+<span class="o">)</span>
+@       IN  NS          master.sparkle.local.
+@       IN  NS          slave.sparkle.local.
+@       IN  A           192.168.50.11
+@       IN  A           192.168.50.22
+master       IN  A   192.168.50.11
+slave    IN  A   192.168.50.22
+</code></pre></div></div>
+
+<p>Create reverse zone configuration saved in <code class="language-plaintext highlighter-rouge">/var/named/50.168.192.zone </code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$TTL</span> 86400
+@   IN  SOA     master.sparkle.local. root.sparkle.local. <span class="o">(</span>
+        2011071001  <span class="p">;</span>Serial
+        3600        <span class="p">;</span>Refresh
+        1800        <span class="p">;</span>Retry
+        604800      <span class="p">;</span>Expire
+        86400       <span class="p">;</span>Minimum TTL
+<span class="o">)</span>
+@       IN  NS          master.sparkle.local.
+@       IN  NS          slave.sparkle.local.
+@       IN  PTR         sparkle.local.
+master       IN  A   192.168.50.11
+slave    IN  A   192.168.50.22
+</code></pre></div></div>
+
+<p>Check if the main configuration file is correct or not.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># it's right for nothing output</span>
+<span class="nv">$ </span>named-checkconf /etc/named.conf
+
+<span class="c"># It's right for the output contains OK, otherwise you should check the zone config again</span>
+<span class="nv">$ </span>named-checkzone sparkle.local /var/named/sparkle.forward
+<span class="nv">$ </span>named-checkzone sparkle.local /var/named/sparkle.reverse
+</code></pre></div></div>
+
+<p>Start and enable the named service.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start named
+<span class="nv">$ </span>systemctl <span class="nb">enable </span>named
+</code></pre></div></div>
+
+<p>Update network interface configuration to use current DNS address.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/sysconfig/network-scripts/ifcfg-ens192
+<span class="c"># add these lines</span>
+<span class="nv">DNS1</span><span class="o">=</span>192.168.50.11
+<span class="nv">DNS2</span><span class="o">=</span>192.168.50.22
+</code></pre></div></div>
+
+<p>Update <code class="language-plaintext highlighter-rouge">/etc/resolv.conf</code> to use current DNS address.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /etc/resolv.conf
+nameserver   192.168.50.11 <span class="c">#master</span>
+nameserver   192.168.50.22 <span class="c">#slave</span>
+</code></pre></div></div>
+
+<p>Restart the network service</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl restart network
+</code></pre></div></div>
+
+<p>Allow the DNS service default port 53 through iptables.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># iptables</span>
+<span class="nv">$ </span>iptables <span class="nt">-I</span> INPUT <span class="nt">-m</span> state <span class="nt">--state</span> NEW <span class="nt">-p</span> tcp <span class="nt">--dport</span> 53 <span class="nt">-j</span> ACCEPT
+<span class="nv">$ </span>iptables <span class="nt">-I</span> INPUT <span class="nt">-m</span> state <span class="nt">--state</span> NEW <span class="nt">-p</span> udp <span class="nt">--dport</span> 53 <span class="nt">-j</span> ACCEPT
+
+<span class="c"># firewalld</span>
+<span class="nv">$ </span>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>53/tcp
+<span class="nv">$ </span>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-port</span><span class="o">=</span>53/udp
+<span class="nv">$ </span>firewall-cmd <span class="nt">--reload</span>
+</code></pre></div></div>
+
+<h2 id="slave">Slave</h2>
+
+<p>Install required RPM packages.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yum <span class="nb">install</span> <span class="nt">-y</span> <span class="nb">bind </span>bind-utils
+</code></pre></div></div>
+
+<p>Modify the main configuration file saved in <code class="language-plaintext highlighter-rouge">/etc/named.conf</code></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>options <span class="o">{</span>
+	<span class="c"># add slave ip address</span>
+    listen-on port 53 <span class="o">{</span> 127.0.0.1<span class="p">;</span>192.168.50.22<span class="p">;</span> <span class="o">}</span><span class="p">;</span> 
+    <span class="c">#listen-on-v6 port 53 { ::1; };  # disable ipv6 I don't want </span>
+    directory       <span class="s2">"/var/named"</span><span class="p">;</span>
+    dump-file       <span class="s2">"/var/named/data/cache_dump.db"</span><span class="p">;</span>
+    statistics-file <span class="s2">"/var/named/data/named_stats.txt"</span><span class="p">;</span>
+    memstatistics-file <span class="s2">"/var/named/data/named_mem_stats.txt"</span><span class="p">;</span>
+    <span class="c"># define client ip range which can use current dns service</span>
+    allow-query     <span class="o">{</span> localhost<span class="p">;</span>0.0.0.0/0<span class="p">;</span> <span class="o">}</span><span class="p">;</span>
+
+    recursion <span class="nb">yes</span><span class="p">;</span>
+
+    dnssec-enable <span class="nb">yes</span><span class="p">;</span>
+    dnssec-validation <span class="nb">yes</span><span class="p">;</span>
+
+    /<span class="k">*</span> Path to ISC DLV key <span class="k">*</span>/
+    bindkeys-file <span class="s2">"/etc/named.iscdlv.key"</span><span class="p">;</span>
+
+    managed-keys-directory <span class="s2">"/var/named/dynamic"</span><span class="p">;</span>
+
+    pid-file <span class="s2">"/run/named/named.pid"</span><span class="p">;</span>
+    session-keyfile <span class="s2">"/run/named/session.key"</span><span class="p">;</span>
+
+<span class="o">}</span><span class="p">;</span>
+
+logging <span class="o">{</span>
+        channel default_debug <span class="o">{</span>
+                file <span class="s2">"data/named.run"</span><span class="p">;</span>
+                severity dynamic<span class="p">;</span>
+        <span class="o">}</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+zone <span class="s2">"."</span> IN <span class="o">{</span>
+        <span class="nb">type </span>hint<span class="p">;</span>
+        file <span class="s2">"named.ca"</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+<span class="c"># define slave forward zone configuration</span>
+zone <span class="s2">"sparkle.local"</span> IN <span class="o">{</span>
+    <span class="nb">type </span>slave<span class="p">;</span>
+    file <span class="s2">"slaves/sparkle.local.zone"</span><span class="p">;</span>
+    masters <span class="o">{</span> 192.168.50.11<span class="p">;</span> <span class="o">}</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+<span class="c"># define slave reverse zone configuration</span>
+zone <span class="s2">"50.168.192.in-addr.arpa"</span> IN <span class="o">{</span>
+    <span class="nb">type </span>slave<span class="p">;</span>
+    file <span class="s2">"slaves/50.168.192.zone"</span><span class="p">;</span>
+    masters <span class="o">{</span> 192.168.50.11<span class="p">;</span> <span class="o">}</span><span class="p">;</span>
+<span class="o">}</span><span class="p">;</span>
+
+include <span class="s2">"/etc/named.rfc1912.zones"</span><span class="p">;</span>
+include <span class="s2">"/etc/named.root.key"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Check if the main configuration file is correct or not.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># it's right for nothing output</span>
+<span class="nv">$ </span>named-checkconf /etc/named.conf
+</code></pre></div></div>
+
+<p>Start and enable named service</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start named
+<span class="nv">$ </span>systemctl <span class="nb">enable </span>named
+</code></pre></div></div>
+
+<p>There is no need to create zone configurations manually at this time, which will be sync by master named service. But you should check the zone configurations exist or not after about 5 minutes , maybe less.</p>
+
+<p>Update network interface configuration to use current DNS address.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>vim /etc/sysconfig/network-scripts/ifcfg-ens192
+<span class="c"># add these lines</span>
+<span class="nv">DNS1</span><span class="o">=</span>192.168.50.11
+<span class="nv">DNS2</span><span class="o">=</span>192.168.50.22
+</code></pre></div></div>
+
+<p>Update <code class="language-plaintext highlighter-rouge">/etc/resolv.conf</code> to use current DNS address.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> /etc/resolv.conf
+nameserver   192.168.50.11 <span class="c">#master</span>
+nameserver   192.168.50.22 <span class="c">#slave</span>
+</code></pre></div></div>
+
+<h2 id="client">Client</h2>
+
+<p>Assuming the client system is centos 7. There are 3 ways to check if the DNS service is correct or not.</p>
+
+<p>Make sure you have updated network interface configuration and resolve configuration.</p>
+
+<ul>
+  <li>Ping</li>
+</ul>
+
+<p>The easiest way to check domain name.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ping master.sparcle.local
+Reply from 192.168.50.11: <span class="nv">bytes</span><span class="o">=</span>32 <span class="nb">time</span><span class="o">=</span>1ms <span class="nv">TTL</span><span class="o">=</span>126
+</code></pre></div></div>
+
+<ul>
+  <li>nslookup</li>
+</ul>
+
+<p>The flexible way you can specify which DNS address you want to use.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># use default dns address to check domain name</span>
+<span class="nv">$ </span>nslookup master.sparcle.local
+Server:         192.168.50.11
+Address:        192.168.50.11#53
+
+Name:   master.sparcle.local
+Address: 192.168.50.11
+
+<span class="c"># use slave dns address to check domain name</span>
+<span class="nv">$ </span>nslookup master.sparcle.local 192.168.50.22
+Server:         192.168.50.22
+Address:        192.168.50.22#53
+
+Name:   master.sparcle.local
+Address: 192.168.50.11
+</code></pre></div></div>
+
+<ul>
+  <li>dig</li>
+</ul>
+
+<p>The way you can get full information about domain name .</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>dig master.sparcle.local
+<span class="p">;</span> &lt;&lt;<span class="o">&gt;&gt;</span> DiG 9.9.4-RedHat-9.9.4-61.el7 &lt;&lt;<span class="o">&gt;&gt;</span> vcenter.ztrx.gz
+<span class="p">;;</span> global options: +cmd
+<span class="p">;;</span> Got answer:
+<span class="p">;;</span> -&gt;&gt;HEADER<span class="o">&lt;&lt;-</span> <span class="no">opcode</span><span class="sh">: QUERY, status: NOERROR, id: 56346
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;master.sparcle.local.               IN      A
+
+;; ANSWER SECTION:
+master.sparcle.local.        86400   IN      A       192.168.50.11
+
+;; AUTHORITY SECTION:
+ztrx.gz.                86400   IN      NS     master.sparcle.local.
+
+;; ADDITIONAL SECTION:
+master.sparcle.local.         86400   IN      A       192.168.50.11
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Mon Nov 18 10:23:49 CST 2019
+;; MSG SIZE  rcvd: 97
+</span></code></pre></div></div>
+
+<h2 id="sync">Sync</h2>
+
+<p>Assume you want to add a new A record to DNS service like this</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ping test.sparcle.local
+Reply from 192.168.50.33: <span class="nv">bytes</span><span class="o">=</span>32 <span class="nb">time</span><span class="o">=</span>1ms <span class="nv">TTL</span><span class="o">=</span>126
+</code></pre></div></div>
+
+<p>Add this line to both forward zone configuration file and reverse zone configuration file in master server.</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>slave    IN  A   192.168.50.33
+</code></pre></div></div>
+
+<p>The most <code class="language-plaintext highlighter-rouge">important</code> thing is that change the <code class="language-plaintext highlighter-rouge">Serial</code> value and make it larger than before, or the slave server can not get update record from master server.</p>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/2019/09/25/How-To-deploy-local-http-yum-repository.html" title="How to deploy local http yum repository">How to deploy local http yum...</a><a class="next" href="/2019/10/26/When-the-camellia-blooms.html" title="When the Camellia Blooms">When the Camellia Blooms</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/2020/03/14/How-To-Load-Apache-Module-In-Qnap.html" title="When the Camellia Blooms">How To Load Apache Proxy Module in Qnap</a></li>
+<li><a class="post-link" href="/2019/02/18/How-To-Use-Iptables.html" title="When the Camellia Blooms">How To Use Iptables</a></li>
+<li><a class="post-link" href="/2019/10/26/When-the-camellia-blooms.html" title="When the Camellia Blooms">When the Camellia Blooms</a></li>
+<li><a class="post-link" href="/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html" title="When the Camellia Blooms">How To Deploy DNS Master-Slave Service</a></li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items=20) {
+      var items = menuContent.firstChild.children;
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+      <div>Copyright © 1970-2020 @GitHub User</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="http://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

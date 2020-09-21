@@ -1,0 +1,1273 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.1.1">Jekyll</generator><link href="https://zshmobi.com/feed.xml" rel="self" type="application/atom+xml" /><link href="https://zshmobi.com/" rel="alternate" type="text/html" /><updated>2020-09-21T02:29:40+00:00</updated><id>https://zshmobi.com/feed.xml</id><title type="html">ZshMobi</title><subtitle>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.</subtitle><author><name>GitHub User</name></author><entry><title type="html">How To Load Apache Proxy Module in Qnap</title><link href="https://zshmobi.com/2020/03/14/How-To-Load-Apache-Module-In-Qnap.html" rel="alternate" type="text/html" title="How To Load Apache Proxy Module in Qnap" /><published>2020-03-14T00:00:00+00:00</published><updated>2020-03-14T00:00:00+00:00</updated><id>https://zshmobi.com/2020/03/14/How-To-Load-Apache-Module-In-Qnap</id><content type="html" xml:base="https://zshmobi.com/2020/03/14/How-To-Load-Apache-Module-In-Qnap.html">&lt;p&gt;Log in to the Qnap as administrator via SSH.&lt;/p&gt;
+
+&lt;p&gt;To View the list of avaliable Apache modules, go to&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/local/apache/modules
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To view those modules have already load, open this file&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/config/apache/extra/apache-default-modules.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;You should add proxy modules to the main configuration of Apache, showed as below,  not the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apache-default-modules.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/etc/config/apache/apache.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Just append these lines into the conf&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Added by xxx, xx/xx/2020 23:21:00&lt;/span&gt;
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_connect_module modules/mod_proxy_connect.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create a new virtual host configuration through qnap web UI , by going to&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Main Menu&lt;/strong&gt; &amp;gt; &lt;strong&gt;Control Panel&lt;/strong&gt; &amp;gt; &lt;strong&gt;Applications&lt;/strong&gt; &amp;gt; &lt;strong&gt;Web Server&lt;/strong&gt; &amp;gt; &lt;strong&gt;Virtual Host&lt;/strong&gt; &amp;gt; &lt;strong&gt;Create New Virtual Host&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Fill in your virtual host information as you like in the correct position, such as&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# hostname &lt;/span&gt;
+test.com
+
+&lt;span class=&quot;c&quot;&gt;# port&lt;/span&gt;
+80
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now open the configuration of user vhost , &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/config/apache/extra/httpd-vhosts-user.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NameVirtualHost &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:80
+
+
+&amp;lt;VirtualHost _default_:80&amp;gt;
+        DocumentRoot &lt;span class=&quot;s2&quot;&gt;&quot;/share/Web&quot;&lt;/span&gt;
+&amp;lt;/VirtualHost&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# The vhost your added before&lt;/span&gt;
+&amp;lt;VirtualHost &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:80&amp;gt;
+        ServerName test.com
+        DocumentRoot &lt;span class=&quot;s2&quot;&gt;&quot;/share/Public&quot;&lt;/span&gt;
+&amp;lt;Directory &lt;span class=&quot;s2&quot;&gt;&quot;/share/Public&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+        Options FollowSymLinks MultiViews
+        AllowOverride All
+        Require all granted
+&amp;lt;/Directory&amp;gt;
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Update some options to support proxy module that client can browse web application behind apache whose port is 8080.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;NameVirtualHost &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:80
+
+
+&amp;lt;VirtualHost _default_:80&amp;gt;
+        DocumentRoot &lt;span class=&quot;s2&quot;&gt;&quot;/share/Web&quot;&lt;/span&gt;
+&amp;lt;/VirtualHost&amp;gt;
+&amp;lt;VirtualHost &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;:80&amp;gt;
+        ServerName test.com
+        ProxyRequests off
+        &amp;lt;Proxy &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span class=&quot;c&quot;&gt;#Order allow,deny&lt;/span&gt;
+            Require all granted
+        &amp;lt;/Proxy&amp;gt;
+        ProxyPass &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://127.0.0.1:8080/&quot;&lt;/span&gt;
+        ProxyPassReverse &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;http://127.0.0.1:8080/&quot;&lt;/span&gt;
+&amp;lt;/VirtualHost&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;At last, restart Apache service.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; /etc/init.d/Qthttpd.sh restart
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;BOOM!!! 😉 Enjoy yourself.&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="HowTo" /><summary type="html">Log in to the Qnap as administrator via SSH.</summary></entry><entry><title type="html">When the Camellia Blooms</title><link href="https://zshmobi.com/2019/10/26/When-the-camellia-blooms.html" rel="alternate" type="text/html" title="When the Camellia Blooms" /><published>2019-10-26T00:00:00+00:00</published><updated>2019-10-26T00:00:00+00:00</updated><id>https://zshmobi.com/2019/10/26/When-the-camellia-blooms</id><content type="html" xml:base="https://zshmobi.com/2019/10/26/When-the-camellia-blooms.html">&lt;p&gt;It took a whole Saturday night to watch this Korean TV show, which was crazy for me.&lt;/p&gt;
+
+&lt;p&gt;I must admit this soap TV show reminds me of the feeling you fall in love with someone.&lt;/p&gt;
+
+&lt;p&gt;I am looking forward to the second season, wondering what happens to them.&lt;/p&gt;
+
+&lt;p&gt;Click &lt;a href=&quot;https://www.themoviedb.org/tv/93097&quot;&gt;HERE&lt;/a&gt; for more information about this TV show.&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="TVs" /><summary type="html">It took a whole Saturday night to watch this Korean TV show, which was crazy for me.</summary></entry><entry><title type="html">How To Deploy DNS Master-Slave Service</title><link href="https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html" rel="alternate" type="text/html" title="How To Deploy DNS Master-Slave Service" /><published>2019-09-27T00:00:00+00:00</published><updated>2019-09-27T00:00:00+00:00</updated><id>https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service</id><content type="html" xml:base="https://zshmobi.com/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html">&lt;p&gt;There are some experiment information I should mentioned as blow&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Server Type&lt;/th&gt;
+      &lt;th&gt;IP Address&lt;/th&gt;
+      &lt;th&gt;Domain Name&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Master&lt;/td&gt;
+      &lt;td&gt;192.168.50.11&lt;/td&gt;
+      &lt;td&gt;master.sparkle.local&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Slave&lt;/td&gt;
+      &lt;td&gt;192.168.50.22&lt;/td&gt;
+      &lt;td&gt;slave.sparkle.local&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;master&quot;&gt;Master&lt;/h2&gt;
+
+&lt;p&gt;Install required RPM packages.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;bind &lt;/span&gt;bind-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Modify the main configuration file saved in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/named.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;options &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c&quot;&gt;# add master ip address&lt;/span&gt;
+    listen-on port 53 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 127.0.0.1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;192.168.50.11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+    &lt;span class=&quot;c&quot;&gt;#listen-on-v6 port 53 { ::1; };  # disable ipv6 I don't want &lt;/span&gt;
+    directory       &lt;span class=&quot;s2&quot;&gt;&quot;/var/named&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    dump-file       &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/cache_dump.db&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    statistics-file &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/named_stats.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    memstatistics-file &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/named_mem_stats.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# define client ip range which can use current dns service&lt;/span&gt;
+    allow-query     &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; localhost&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;0.0.0.0/0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# transfer to the slave server&lt;/span&gt;
+    allow-transfer     &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 192.168.50.22&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    recursion &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    dnssec-enable &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    dnssec-validation &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    /&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Path to ISC DLV key &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/
+    bindkeys-file &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.iscdlv.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    managed-keys-directory &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/dynamic&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    pid-file &lt;span class=&quot;s2&quot;&gt;&quot;/run/named/named.pid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    session-keyfile &lt;span class=&quot;s2&quot;&gt;&quot;/run/named/session.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+logging &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        channel default_debug &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                file &lt;span class=&quot;s2&quot;&gt;&quot;data/named.run&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                severity dynamic&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+zone &lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;hint&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        file &lt;span class=&quot;s2&quot;&gt;&quot;named.ca&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# define master forward zone configuration&lt;/span&gt;
+zone &lt;span class=&quot;s2&quot;&gt;&quot;sparkle.local&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;             
+    &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;master&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                       
+    file &lt;span class=&quot;s2&quot;&gt;&quot;sparkle.local.zone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    notify &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    allow-update &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; none&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                                 
+
+&lt;span class=&quot;c&quot;&gt;# define master reverse zone configuration&lt;/span&gt;
+zone &lt;span class=&quot;s2&quot;&gt;&quot;50.168.192.in-addr.arpa&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;master&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                       
+    file &lt;span class=&quot;s2&quot;&gt;&quot;50.168.192.zone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    notify &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    allow-update &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; none&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;            
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;                                 
+
+include &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.rfc1912.zones&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+include &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.root.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create forward zone configuration saved in  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/named/sparkle.local.zone &lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$TTL&lt;/span&gt; 86400
+@   IN  SOA     master.sparkle.local. root.sparkle.local. &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        2011071001  &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Serial
+        3600        &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Refresh
+        1800        &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Retry
+        604800      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Expire
+        86400       &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Minimum TTL
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+@       IN  NS          master.sparkle.local.
+@       IN  NS          slave.sparkle.local.
+@       IN  A           192.168.50.11
+@       IN  A           192.168.50.22
+master       IN  A   192.168.50.11
+slave    IN  A   192.168.50.22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create reverse zone configuration saved in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/var/named/50.168.192.zone &lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$TTL&lt;/span&gt; 86400
+@   IN  SOA     master.sparkle.local. root.sparkle.local. &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
+        2011071001  &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Serial
+        3600        &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Refresh
+        1800        &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Retry
+        604800      &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Expire
+        86400       &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;Minimum TTL
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+@       IN  NS          master.sparkle.local.
+@       IN  NS          slave.sparkle.local.
+@       IN  PTR         sparkle.local.
+master       IN  A   192.168.50.11
+slave    IN  A   192.168.50.22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Check if the main configuration file is correct or not.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# it's right for nothing output&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;named-checkconf /etc/named.conf
+
+&lt;span class=&quot;c&quot;&gt;# It's right for the output contains OK, otherwise you should check the zone config again&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;named-checkzone sparkle.local /var/named/sparkle.forward
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;named-checkzone sparkle.local /var/named/sparkle.reverse
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Start and enable the named service.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl start named
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;named
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Update network interface configuration to use current DNS address.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /etc/sysconfig/network-scripts/ifcfg-ens192
+&lt;span class=&quot;c&quot;&gt;# add these lines&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;DNS1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.50.11
+&lt;span class=&quot;nv&quot;&gt;DNS2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.50.22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Update &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/resolv.conf&lt;/code&gt; to use current DNS address.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/resolv.conf
+nameserver   192.168.50.11 &lt;span class=&quot;c&quot;&gt;#master&lt;/span&gt;
+nameserver   192.168.50.22 &lt;span class=&quot;c&quot;&gt;#slave&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Restart the network service&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl restart network
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Allow the DNS service default port 53 through iptables.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# iptables&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 53 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; udp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 53 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+
+&lt;span class=&quot;c&quot;&gt;# firewalld&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;firewall-cmd &lt;span class=&quot;nt&quot;&gt;--permanent&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--add-port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;53/tcp
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;firewall-cmd &lt;span class=&quot;nt&quot;&gt;--permanent&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--add-port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;53/udp
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;firewall-cmd &lt;span class=&quot;nt&quot;&gt;--reload&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;slave&quot;&gt;Slave&lt;/h2&gt;
+
+&lt;p&gt;Install required RPM packages.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;bind &lt;/span&gt;bind-utils
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Modify the main configuration file saved in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/named.conf&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;options &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;c&quot;&gt;# add slave ip address&lt;/span&gt;
+    listen-on port 53 &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 127.0.0.1&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;192.168.50.22&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+    &lt;span class=&quot;c&quot;&gt;#listen-on-v6 port 53 { ::1; };  # disable ipv6 I don't want &lt;/span&gt;
+    directory       &lt;span class=&quot;s2&quot;&gt;&quot;/var/named&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    dump-file       &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/cache_dump.db&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    statistics-file &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/named_stats.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    memstatistics-file &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/data/named_mem_stats.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;# define client ip range which can use current dns service&lt;/span&gt;
+    allow-query     &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; localhost&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;0.0.0.0/0&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    recursion &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    dnssec-enable &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    dnssec-validation &lt;span class=&quot;nb&quot;&gt;yes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    /&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; Path to ISC DLV key &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/
+    bindkeys-file &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.iscdlv.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    managed-keys-directory &lt;span class=&quot;s2&quot;&gt;&quot;/var/named/dynamic&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    pid-file &lt;span class=&quot;s2&quot;&gt;&quot;/run/named/named.pid&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    session-keyfile &lt;span class=&quot;s2&quot;&gt;&quot;/run/named/session.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+logging &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        channel default_debug &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                file &lt;span class=&quot;s2&quot;&gt;&quot;data/named.run&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+                severity dynamic&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+zone &lt;span class=&quot;s2&quot;&gt;&quot;.&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;hint&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        file &lt;span class=&quot;s2&quot;&gt;&quot;named.ca&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# define slave forward zone configuration&lt;/span&gt;
+zone &lt;span class=&quot;s2&quot;&gt;&quot;sparkle.local&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;slave&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    file &lt;span class=&quot;s2&quot;&gt;&quot;slaves/sparkle.local.zone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    masters &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 192.168.50.11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# define slave reverse zone configuration&lt;/span&gt;
+zone &lt;span class=&quot;s2&quot;&gt;&quot;50.168.192.in-addr.arpa&quot;&lt;/span&gt; IN &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;slave&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    file &lt;span class=&quot;s2&quot;&gt;&quot;slaves/50.168.192.zone&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    masters &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 192.168.50.11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+include &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.rfc1912.zones&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+include &lt;span class=&quot;s2&quot;&gt;&quot;/etc/named.root.key&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Check if the main configuration file is correct or not.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# it's right for nothing output&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;named-checkconf /etc/named.conf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Start and enable named service&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl start named
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;named
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is no need to create zone configurations manually at this time, which will be sync by master named service. But you should check the zone configurations exist or not after about 5 minutes , maybe less.&lt;/p&gt;
+
+&lt;p&gt;Update network interface configuration to use current DNS address.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /etc/sysconfig/network-scripts/ifcfg-ens192
+&lt;span class=&quot;c&quot;&gt;# add these lines&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;DNS1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.50.11
+&lt;span class=&quot;nv&quot;&gt;DNS2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;192.168.50.22
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Update &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/resolv.conf&lt;/code&gt; to use current DNS address.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/resolv.conf
+nameserver   192.168.50.11 &lt;span class=&quot;c&quot;&gt;#master&lt;/span&gt;
+nameserver   192.168.50.22 &lt;span class=&quot;c&quot;&gt;#slave&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;client&quot;&gt;Client&lt;/h2&gt;
+
+&lt;p&gt;Assuming the client system is centos 7. There are 3 ways to check if the DNS service is correct or not.&lt;/p&gt;
+
+&lt;p&gt;Make sure you have updated network interface configuration and resolve configuration.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Ping&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The easiest way to check domain name.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ping master.sparcle.local
+Reply from 192.168.50.11: &lt;span class=&quot;nv&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1ms &lt;span class=&quot;nv&quot;&gt;TTL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;126
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;nslookup&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The flexible way you can specify which DNS address you want to use.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# use default dns address to check domain name&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nslookup master.sparcle.local
+Server:         192.168.50.11
+Address:        192.168.50.11#53
+
+Name:   master.sparcle.local
+Address: 192.168.50.11
+
+&lt;span class=&quot;c&quot;&gt;# use slave dns address to check domain name&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;nslookup master.sparcle.local 192.168.50.22
+Server:         192.168.50.22
+Address:        192.168.50.22#53
+
+Name:   master.sparcle.local
+Address: 192.168.50.11
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;dig&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The way you can get full information about domain name .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dig master.sparcle.local
+&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; DiG 9.9.4-RedHat-9.9.4-61.el7 &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; vcenter.ztrx.gz
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; global options: +cmd
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; Got answer:
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; -&amp;gt;&amp;gt;HEADER&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;: QUERY, status: NOERROR, id: 56346
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;master.sparcle.local.               IN      A
+
+;; ANSWER SECTION:
+master.sparcle.local.        86400   IN      A       192.168.50.11
+
+;; AUTHORITY SECTION:
+ztrx.gz.                86400   IN      NS     master.sparcle.local.
+
+;; ADDITIONAL SECTION:
+master.sparcle.local.         86400   IN      A       192.168.50.11
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Mon Nov 18 10:23:49 CST 2019
+;; MSG SIZE  rcvd: 97
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;sync&quot;&gt;Sync&lt;/h2&gt;
+
+&lt;p&gt;Assume you want to add a new A record to DNS service like this&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ping test.sparcle.local
+Reply from 192.168.50.33: &lt;span class=&quot;nv&quot;&gt;bytes&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;32 &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1ms &lt;span class=&quot;nv&quot;&gt;TTL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;126
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add this line to both forward zone configuration file and reverse zone configuration file in master server.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;slave    IN  A   192.168.50.33
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The most &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;important&lt;/code&gt; thing is that change the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Serial&lt;/code&gt; value and make it larger than before, or the slave server can not get update record from master server.&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="HowTo" /><summary type="html">There are some experiment information I should mentioned as blow</summary></entry><entry><title type="html">How to deploy local http yum repository</title><link href="https://zshmobi.com/2019/09/25/How-To-deploy-local-http-yum-repository.html" rel="alternate" type="text/html" title="How to deploy local http yum repository" /><published>2019-09-25T00:00:00+00:00</published><updated>2019-09-25T00:00:00+00:00</updated><id>https://zshmobi.com/2019/09/25/How-To-deploy-local-http-yum-repository</id><content type="html" xml:base="https://zshmobi.com/2019/09/25/How-To-deploy-local-http-yum-repository.html">&lt;p&gt;Installing some RPM packages without WAN network can be painful. Why not deploy a local http yum repository to manage your rpm packages.&lt;/p&gt;
+
+&lt;p&gt;Assume we have two host just like this&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;CentOS 7 Server - 1.2.3.4&lt;/li&gt;
+  &lt;li&gt;CentOS 7 Client - 1.2.3.5&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;server&quot;&gt;Server&lt;/h2&gt;
+
+&lt;p&gt;Mount CentOS 7 DVD iso into the server .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pv&lt;/span&gt; /media/CentOS
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mount /dev/cd-rom /media/CentOS
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create local yum repository&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# create local repository directory&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pv&lt;/span&gt; /data/mylocal
+
+&lt;span class=&quot;c&quot;&gt;# sync rpm packages&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-ap&lt;/span&gt; /media/CentOS/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; /data/mylocal
+
+&lt;span class=&quot;c&quot;&gt;# create local repository info&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;createrepo &lt;span class=&quot;nt&quot;&gt;--disablerepo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'*'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--enablerepo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'c7-media'&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;createrepo /data/mylocal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create local yum repository configuration and Test it&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /etc/yum.repos.d/mylocal.repo
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mylocal]
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mylocal
+&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;file://data/mylocal
+&lt;span class=&quot;nv&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;nv&quot;&gt;gpgcheck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum clean all &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; yum repolist all
+
+&lt;span class=&quot;c&quot;&gt;# test the repository&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum search vsftp &lt;span class=&quot;nt&quot;&gt;--disablerepo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'*'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--enablerepo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mylocal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Add a virtual host configuration in nginx.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;nginx
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /etc/nginx/conf.d/mylocal.conf
+server &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    listen 8090&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    server_name your_server_name&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    root /data/mylocal&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    location / &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    	autoindex on&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;# Make Sure this line exist !&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;nginx &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl reload nginx
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;nginx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Consider the only repository is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mylocal&lt;/code&gt; , you can delete other &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*.repo&lt;/code&gt; saved in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/yum.repos.d&lt;/code&gt; , which make &lt;strong&gt;mylocal&lt;/strong&gt; as the default repository.&lt;/p&gt;
+
+&lt;p&gt;Allow the port you defined in nginx virtual host through iptables.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# port 8090 defined in nginx &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 8090 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember to umount the DVD iso .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;umount /media/CentOS
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;client&quot;&gt;Client&lt;/h2&gt;
+
+&lt;p&gt;Add a new repository configuration saved in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/yum.repos.d/mylocal&lt;/code&gt; .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;vim /etc/yum.repos.d/mylocal.repo
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;mylocal]
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mylocal
+&lt;span class=&quot;nv&quot;&gt;baseurl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://192.168.50.11:8090    
+&lt;span class=&quot;nv&quot;&gt;enabled&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;nv&quot;&gt;gpgcheck&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set &lt;strong&gt;mylocal&lt;/strong&gt; as default repository and update yum cache.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mv &lt;/span&gt;CentOS-&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.repo /tmp
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum clean all &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; yum makecache
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Try to install a rpm package whether the repository run correctly or not.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;w3m &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;update-repository&quot;&gt;Update Repository&lt;/h2&gt;
+
+&lt;p&gt;You need to update repository manually, when you want to add some new packages.&lt;/p&gt;
+
+&lt;p&gt;Assume you want to add package &lt;strong&gt;vsftpd&lt;/strong&gt; . The package dependence could be solved by &lt;em&gt;yum&lt;/em&gt; command.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# execute these command in a centos contain WAN network&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# clear cache packages&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find /var/cache/yum/x86_64/7 &lt;span class=&quot;nt&quot;&gt;-name&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*.rpm&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-exec&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# download vsftpd package&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;vsftpd
+	Resolving Dependencies                                                 
+	&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Running transaction check                                           
+	&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Package vsftpd.x86_64 0:3.0.2-25.el7 will be installed             
+	&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Finished Dependency Resolution                                                                                                   
+	Dependencies Resolved                    
+  &lt;span class=&quot;o&quot;&gt;==============================================================&lt;/span&gt;
+	 Package         Arch         Version      Repository       Size 
+	&lt;span class=&quot;o&quot;&gt;=====================================================================&lt;/span&gt;
+	Installing:              
+	 vsftpd          x86_64        3.0.2-25.el7       base         171 k 
+	Transaction Summary        
+  &lt;span class=&quot;o&quot;&gt;======================================================================&lt;/span&gt;
+	Install  1 Package     
+	Total download size: 171 k     
+	Installed size: 353 k     
+	Is this ok &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/d/N]: d   &lt;span class=&quot;c&quot;&gt;# Choose d !!!  &lt;/span&gt;
+	Background downloading packages, &lt;span class=&quot;k&quot;&gt;then &lt;/span&gt;exiting:  
+	vsftpd-3.0.2-25.el7.x86_64.rpm               | 171 kB  00:00:06 
+	exiting because &lt;span class=&quot;s2&quot;&gt;&quot;Download Only&quot;&lt;/span&gt; specified 
+	
+&lt;span class=&quot;c&quot;&gt;# tar all of the related packages &lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-pv&lt;/span&gt; /tmp/vsfptd
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find /var/cache/yum/x86_64/7 &lt;span class=&quot;nt&quot;&gt;-name&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*.rpm&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-exec&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{}&lt;/span&gt; /tmp/vsftpd &lt;span class=&quot;se&quot;&gt;\;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /tmp/vsftpd &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-jcf&lt;/span&gt; vsftpd_rpms.tar.bz2 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.rpm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Upload the &lt;strong&gt;vsftpd_rpms.tar.bz2&lt;/strong&gt; to server , which means the &lt;em&gt;192.168.50.11&lt;/em&gt;, then create repository once again.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# assume vsftpd_rpms.tar.bz2 saved in /usr/local/src&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-xf&lt;/span&gt; /usr/local/src/vsftpd_rpms.tar.bz2 &lt;span class=&quot;nt&quot;&gt;-C&lt;/span&gt; /data/mylocal/Packages
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;createrepo /data/mylocal
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;BOOM ! Well Done ! You do a great job.&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="HowTo" /><summary type="html">Installing some RPM packages without WAN network can be painful. Why not deploy a local http yum repository to manage your rpm packages.</summary></entry><entry><title type="html">How To Use Iptables</title><link href="https://zshmobi.com/2019/02/18/How-To-Use-Iptables.html" rel="alternate" type="text/html" title="How To Use Iptables" /><published>2019-02-18T00:00:00+00:00</published><updated>2019-02-18T00:00:00+00:00</updated><id>https://zshmobi.com/2019/02/18/How-To-Use-Iptables</id><content type="html" xml:base="https://zshmobi.com/2019/02/18/How-To-Use-Iptables.html">&lt;p&gt;Iptables is a very important skill that must be learned by every system administrator.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;basic-usage&quot;&gt;Basic Usage&lt;/h2&gt;
+
+&lt;p&gt;Enable iptables on centos 7 as root.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl stop firewalld
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yum &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-y&lt;/span&gt; iptables-servers
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl start iptables
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;iptables
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are 3 tables including &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;NAT&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;FILTER&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MANGLE&lt;/code&gt; and 5 chains including &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PREROUTING&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POSTROUTING&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;INPUT&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OUTPUT&lt;/code&gt; , &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;REDIRECT&lt;/code&gt; . Different chains depends on the specific table.&lt;/p&gt;
+
+&lt;p&gt;Iptables default configuration file is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/sysconfig/iptables&lt;/code&gt;, anytime you restart the service, it will read iptables rules from the file. Let’s see the default rules looks like.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# /etc/sysconfig/iptables&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;nat
+:PREROUTING ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]     &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+:INPUT ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]          &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+:OUTPUT ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]         &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+:POSTROUTING ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]    &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+
+COMMIT
+
+
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;filter
+:INPUT ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]    &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+:FORWARD ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]  &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+:OUTPUT ACCEPT &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;0:0]   &lt;span class=&quot;c&quot;&gt;# default policy is ACCEPT&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; RELATED,ESTABLISHED &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; icmp &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; lo &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 22 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+
+&lt;span class=&quot;c&quot;&gt;#-A INPUT -j REJECT --reject-with icmp-host-prohibited&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#-A FORWARD -j REJECT --reject-with icmp-host-prohibited&lt;/span&gt;
+
+COMMIT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here are some examples of iptables commands usages as root.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# print filter table all rules&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-nvL&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# print filter table INPUT rules&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-nvL&lt;/span&gt; INPUT
+
+&lt;span class=&quot;c&quot;&gt;# default table is filter and show rules num&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-nvL&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--line&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# set filter table FORWARD chains's default policy is REJECT&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; FORWARD REJECT
+
+&lt;span class=&quot;c&quot;&gt;# allow port 8000&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+
+&lt;span class=&quot;c&quot;&gt;# delete a rule depend on the rule number&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-nvL&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;--line&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter INPUT &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; 2  &lt;span class=&quot;c&quot;&gt;# 2 is the rule's number&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;forward&quot;&gt;Forward&lt;/h2&gt;
+
+&lt;p&gt;Forward also very important especially you want to run Linux as a router or gateway. Let’s do some experiments to know more in details. Assuming you have deployed the network environment as follow.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Do these experiment on your local machines and run commands as root !!!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;RouterA       &lt;span class=&quot;c&quot;&gt;# 3.1-eth0&lt;/span&gt;
+├── PC1       &lt;span class=&quot;c&quot;&gt;# 3.10&lt;/span&gt;
+├── PC2       &lt;span class=&quot;c&quot;&gt;# 3.20&lt;/span&gt;
+└── RouterB/PC3    &lt;span class=&quot;c&quot;&gt;# 3.30-enp0s3/8.1-enp0s8&lt;/span&gt;
+    ├── PC3        &lt;span class=&quot;c&quot;&gt;# 8.2&lt;/span&gt;
+    └── PC4        &lt;span class=&quot;c&quot;&gt;# 8.3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we want &lt;strong&gt;PC2&lt;/strong&gt; can communicate with &lt;strong&gt;PC4&lt;/strong&gt; each other through &lt;strong&gt;PC3&lt;/strong&gt; .&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;PC3&lt;/strong&gt; basic requirement settings.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# enable kernel ip_forward&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'net.ipv4.ip_forward = 1'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/sysctl.conf
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sysctl &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# if the result is 1, meaning you turn on the ip_forward&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/sys/net/ipv4/ip_forward
+
+&lt;span class=&quot;c&quot;&gt;# use deault iptables rules showed before.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# set filter table FORWARD chain's default policy is ACCEPT&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl restart iptable
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter FORWARD &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;PC2&lt;/strong&gt; settings&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# add a new route rule&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;route add &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; 192.168.8.0/24 gw 192.168.3.30
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now &lt;strong&gt;PC2&lt;/strong&gt; and &lt;strong&gt;PC4&lt;/strong&gt; can ping each other, but let’s add a new rule on &lt;strong&gt;PC3&lt;/strong&gt; .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; REJECT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;They can’t ping each other this time, now we need to add specific rules which ports was allowed to  communicate. Assume we want the 8000 port.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# pc4, disable iptables temporarily&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; SimpleHTTPServer 8000 &amp;amp;
+
+&lt;span class=&quot;c&quot;&gt;# pc2, disable iptables temporarily&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; SimpleHTTPServer 8000 &amp;amp;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Allow &lt;strong&gt;PC2&lt;/strong&gt; telnet &lt;strong&gt;PC4&lt;/strong&gt; 8000 port&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# pc3 setting&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.3.0/24 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+
+&lt;span class=&quot;c&quot;&gt;# remeber to add return rules&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.8.0/24 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--sport&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Allow &lt;strong&gt;PC4&lt;/strong&gt; telnet &lt;strong&gt;PC2&lt;/strong&gt; 8000 port&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# pc3 setting&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.8.0/24 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+
+&lt;span class=&quot;c&quot;&gt;# remeber to add return rules&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.3.0/24 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--sport&lt;/span&gt; 8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The return rules can replace by this rule.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# pc3&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; FORWARD &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; ESTABLISHED,RELATED &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Static Route&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you want subnet &lt;strong&gt;192.168.3.0/24&lt;/strong&gt; communicate with &lt;strong&gt;192.168.8.0/24&lt;/strong&gt; each other.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# RouterA&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;route add &lt;span class=&quot;nt&quot;&gt;-net&lt;/span&gt; 192.168.8.0/24 gw 192.168.3.30 dev eth0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;nat&quot;&gt;NAT&lt;/h2&gt;
+
+&lt;p&gt;Assume &lt;em&gt;192.168.3.0&lt;/em&gt; is WAN and &lt;em&gt;192.1168.8.0&lt;/em&gt; is LAN. This time &lt;strong&gt;PC3&lt;/strong&gt; work as a router, &lt;em&gt;Router B&lt;/em&gt;. Don’t forget the basic requirement settings.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SNAT&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;PC2&lt;/strong&gt; only knows the request comes from &lt;em&gt;Router B&lt;/em&gt;, when &lt;strong&gt;PC4&lt;/strong&gt; browse &lt;strong&gt;PC2&lt;/strong&gt; 8000 port.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Router B or PC3&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; POSTROUTING &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.8.0/24 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; SNAT &lt;span class=&quot;nt&quot;&gt;--to-source&lt;/span&gt; 192.168.330
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If Router B is not a static ip, such as PPPOE client used dynamic ip, then use the special action, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;MASQUERADE&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Router B or PC3&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; POSTROUTING &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 192.168.8.0/24 &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; enp0s3 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; MASQUERADE
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DNAT&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Browse the web server behind Router B throng Router B ip address. Assume &lt;strong&gt;PC4&lt;/strong&gt; web server created by python is allow browse on &lt;strong&gt;PC2&lt;/strong&gt; throng &lt;em&gt;192.168.3.30:80&lt;/em&gt; .&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Router B or PC3&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; PREROUTING &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; 192.168.3.30 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 80 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; DNAT &lt;span class=&quot;nt&quot;&gt;--to-destination&lt;/span&gt; 192.168.8.3:8000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;PPPOE dynamic ip&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Router B or PC3&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nat &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; PREROUTING &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; enp0s3 &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 80 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; DNAT &lt;span class=&quot;nt&quot;&gt;--to-destination&lt;/span&gt; 192.168.8.3:8000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+
+&lt;p&gt;Only use on local port redirect.  80 -&amp;gt; 8000&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# PC4&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; REDIRECT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 80 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; REDIRECT &lt;span class=&quot;nt&quot;&gt;--to-ports&lt;/span&gt; 8000
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-A&lt;/span&gt; INPUT &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; multiport 80,8000 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Log all 1194 udp port activity.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# /etc/rsyslog.conf&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'kern.warning /var/log/iptables.log'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/rsyslog.conf
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl restart rsyslog
+
+&lt;span class=&quot;c&quot;&gt;# iptables rule&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptable &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state &lt;span class=&quot;nt&quot;&gt;--state&lt;/span&gt; NEW &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; udp &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; udp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 1194 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; LOG
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Allow port 80 communicate during 8:00 a.m. to 20:00 p.m.&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;iptables &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; filter &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; state NEW &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; tcp &lt;span class=&quot;nt&quot;&gt;--dport&lt;/span&gt; 80 &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--datestart&lt;/span&gt; 08:00 &lt;span class=&quot;nt&quot;&gt;--datestop&lt;/span&gt; 20:00 &lt;span class=&quot;nt&quot;&gt;-j&lt;/span&gt; ACCEPT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;There is no summary, cause I haven’t finish this post yet 😂&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="HowTo" /><summary type="html">Iptables is a very important skill that must be learned by every system administrator.</summary></entry><entry><title type="html">How To Install Arch Linux</title><link href="https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html" rel="alternate" type="text/html" title="How To Install Arch Linux" /><published>2018-02-07T00:00:00+00:00</published><updated>2018-02-07T00:00:00+00:00</updated><id>https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux</id><content type="html" xml:base="https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html">&lt;p&gt;Install Arch Linux step by step, making you understand Linux system more effectively.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h2 id=&quot;usb-disk&quot;&gt;USB Disk&lt;/h2&gt;
+
+&lt;p&gt;Recommend to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;dd&lt;/code&gt; command create bootable usb, or other methods click &lt;a href=&quot;https://wiki.archlinux.org/index.php/USB_flash_installation_media&quot;&gt;Here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;dd &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;bs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4m &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/path/to/archlinux.iso &lt;span class=&quot;nv&quot;&gt;of&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/dev/sdx &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;sync&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;install-arch&quot;&gt;Install Arch&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Read this &lt;a href=&quot;https://wiki.archlinux.org/index.php/Installation_guide&quot;&gt;installation guide&lt;/a&gt; first !&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Check the boot type is UEFI or MBR.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# echo nothing means MBR&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; /sys/firmware/efi/efivars
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Make sure network is OK.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 5 www.so.com
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Use wifi network,  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;recommend to use wire network&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt; &lt;span class=&quot;c&quot;&gt;# connect to wifi network&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;wifi-menu
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Enable ssh service to remote control.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl start sshd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set timezone and time rsync.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;timedatectl set-ntp &lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;timedatectl set-timezone Asia/Shanghai
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set most fast pacman mirrors&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman-mirror &lt;span class=&quot;nt&quot;&gt;--country&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'China'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;disk management&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Check disk partition.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsblk /dev/sdx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fdisk&lt;/code&gt; command to manage your paritions.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Sectors formula：1024 x 1024 x 1024 / 512 x Gigabyte = total sectors numbers.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;fdisk &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /dev/sda
+Disk /dev/sda: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 512 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 512 bytes
+Sector size &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;logical/physical&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: 512 bytes / 4096 bytes
+I/O size &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;minimum/optimal&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: 4096 bytes / 4096 bytes
+Disklabel &lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;: dos
+Disk identifier: 0x73c4c07a
+
+&lt;span class=&quot;c&quot;&gt;# use man fdisk for how to create a new partition.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Also you can use  &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;cfdisk&lt;/code&gt; , which is more humanity.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;UEFI&lt;/code&gt;  mode need a &lt;em&gt;ESP&lt;/em&gt; partition ，click &lt;a href=&quot;https://wiki.archlinux.org/index.php/EFI_System_Partition&quot;&gt;here&lt;/a&gt;  for more in details.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkfs.vfat /dev/sda1
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mount /dev/sda1 /mnt/boot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Format new partitions.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# /dev/sda1  /&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /dev/sda2  /home&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /dev/sda3  swap&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkfs.ext4 /dev/sda1
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkfs.ext4 /dev/sda2
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkswap /dev/sda3
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Mount partitions.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;swapon /dev/sda3
+
+&lt;span class=&quot;c&quot;&gt;# Make sure mount / first.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mount /dev/sda1/ /mnt
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /mnt/home &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; mount /dev/sda2 /mnt/home
+
+&lt;span class=&quot;c&quot;&gt;# Check the mount details.&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lsblk &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install target system.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# WIFI network needs these, iw dialog wpa_supplicant wpa_actiond&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacstrap /mnt base base-devel
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Generate fstab to target system.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;genfstab &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; /mnt &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /mnt/etc/fstab
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Switch to the target system.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;arch-chroot /mnt /bin/bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set timezone and local time.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-sf&lt;/span&gt; /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;hwclock &lt;span class=&quot;nt&quot;&gt;--systohc&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--utc&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set language.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;locale-gen
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/zh_CN\.UTF\-8/ s/#//'&lt;/span&gt; /etc/locale.gen
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/en_US\.UTF\-8/ s/#//'&lt;/span&gt; /etc/locale.gen
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;locale-gen
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/locale.conf &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+LANG=en_US.UTF-8
+LC_CTYPE=zh_CN.UTF-8
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set hostname and hosts.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# hostname&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'JeffArch'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/hostname
+
+&lt;span class=&quot;c&quot;&gt;# hosts&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/hosts &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+127.0.0.1 localhost
+::1       localhost
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set root password.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;passwd root
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install grub.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# os-prober uses for dual-system&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; grub os-prober
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install grub to disk.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# MBR mode without sda partition number&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;grub-install &lt;span class=&quot;nt&quot;&gt;--target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;i386-pc /dev/sda &lt;span class=&quot;nt&quot;&gt;--recheck&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# UEFI mode， mount 512M esp partition to /boot&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; efibootmgr dosfstools
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;grub-install &lt;span class=&quot;nt&quot;&gt;--target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;x86_64-efi &lt;span class=&quot;nt&quot;&gt;--efi-directory&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/boot &lt;span class=&quot;nt&quot;&gt;--bootloader-id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;grub &lt;span class=&quot;nt&quot;&gt;--recheck&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Generate grub configuration.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# system can not boot without this action&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;grub-mkconfig &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; /boot/grub/grub.cfg
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Enable dhcp client service.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;dhcpcd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Exit target system.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Umount target system and reboot computer.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;umount &lt;span class=&quot;nt&quot;&gt;-R&lt;/span&gt; /mnt &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; reboot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember to remove usb disk.&lt;/p&gt;
+
+&lt;h2 id=&quot;initial-system&quot;&gt;Initial System&lt;/h2&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Read this &lt;a href=&quot;https://wiki.archlinux.org/index.php/General_recommendations&quot;&gt;catalogue&lt;/a&gt; first !&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Login as root and create a new normal user for daily management.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;useradd &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-G&lt;/span&gt; wheel &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /bin/bash jeff
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;passwd jeff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Enable &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sudo&lt;/code&gt; function to the new user.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;%jeff ALL=(ALL:ALL) NOPASSWD:ALL&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /etc/sudoers.d/jeff
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chmod &lt;/span&gt;600 /etc/sudoers.d/jeff
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install extra fonts.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# google open source fonts&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; noto-fonts noto-fonts-cjk noto-fonts-emoji
+
+&lt;span class=&quot;c&quot;&gt;# wenquanyi&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; wqy-microhei wqy-zenhei
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ttf-dejavu
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ttf-win7-fonts ttf-office-2007-fonts
+
+&lt;span class=&quot;c&quot;&gt;# monaco fonts&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install display server，which I chose here is &lt;a href=&quot;https://wiki.archlinux.org/index.php/Xorg&quot;&gt;Xorg&lt;/a&gt;. You can not run desktop environment without it.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xorg &lt;span class=&quot;c&quot;&gt;# choose the default vaules&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install graphical driver，vesa is default，others can click  &lt;a href=&quot;https://wiki.archlinux.org/index.php/ATI&quot;&gt;ATI&lt;/a&gt; 、&lt;a href=&quot;https://wiki.archlinux.org/index.php/Intel_graphics&quot;&gt;Intel&lt;/a&gt; 、&lt;a href=&quot;https://wiki.archlinux.org/index.php/NVIDIA&quot;&gt;Nvidia&lt;/a&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# check what your graphic driver is&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lspci | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;VGA
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xf86-video-vesa &lt;span class=&quot;c&quot;&gt;# default&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xf86-video-ati  &lt;span class=&quot;c&quot;&gt;# AMD&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xf86-video-intel  &lt;span class=&quot;c&quot;&gt;# intel&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xf86-video-nouveau  &lt;span class=&quot;c&quot;&gt;# nvidia&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; virtualbox-guest-utils &lt;span class=&quot;c&quot;&gt;# virtualbox&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install &lt;a href=&quot;https://wiki.archlinux.org/index.php/Display_manager&quot;&gt;Display Manager&lt;/a&gt;，here as shown：&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gdm&lt;/code&gt; for &lt;em&gt;GNOME&lt;/em&gt; desktop.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sddm&lt;/code&gt;  for KDE desktop.&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lightDM&lt;/code&gt;  for Cross-desktop display manager, like ubuntu unity desktop.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Install &lt;a href=&quot;https://wiki.archlinux.org/index.php/Desktop_environment&quot;&gt;Desktop environment&lt;/a&gt;，choose one of your faviour.  &lt;br /&gt;
+&lt;em&gt;Gnome Desktop&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; gnome gnome-extras
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;xfce4 Desktop&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; xfce4 xfce4-goodies sddm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;KDE Desktop&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; plasma kde-applications-meta sddm kde-l10n-zh_cn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;KDE Minimal Desktop&lt;/em&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; plasma dolphin kate konsole sddm kde-l10n-zh_cn
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Enable display server auto run when system boot up.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;gdm &lt;span class=&quot;c&quot;&gt;# or sddm or lightDM&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install input method, either Ibus or fcitx.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wiki.archlinux.org/index.php/IBus&quot;&gt;Ibus&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ibus
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ibus-qt
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ibus-rime
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ibus-setup
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; ~/.bashrc &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://wiki.archlinux.org/index.php/Fcitx&quot;&gt;Fcitx&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; fcitx fcitx-rime fcitx-configtool fcitx-gtk3 fcitx-gtk2 fcitx-qt5
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;fcitx-config-gtk3
+
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;GTK_IM_MODULE=fcitx&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;QT_IM_MODULE=fcitx&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;XMODIFIERS=@im=fcitx&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/environment
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now reboot new system and login it again to the desktop environment.&lt;/p&gt;
+
+&lt;h2 id=&quot;software&quot;&gt;Software&lt;/h2&gt;
+
+&lt;p&gt;Recommend these software as shown here.&lt;/p&gt;
+
+&lt;p&gt;Basic software&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; wget zsh w3m curl openssh &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;terminator proxychains vim fakeroot net-tools gparted zip unzip unrar tree ntfs-3g yajl ufw archey3 cronie git
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Multiply media software&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; gedit remmina libvncserver freerdp smplayer smplayer-themes qbittorrent chromium mkvtoolnix-cli mkvtoolnix-gui aegisub subtitleeditor firefox extra/firefox-i18n-zh-cn telegram-desktop chromium
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;SecureCRT&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# download the tar file yourself&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;tar&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-xf&lt;/span&gt; scrt-8.1.4.1443.ubuntu16-64.tar.gz
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo mv &lt;/span&gt;scrt-8.1.4 /usr/local/
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo ln&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /usr/local/scrt-8.1.4/SecureCRT /usr/bin/SecureCRT
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; /usr/local/scrt-8.1.4/SecureCRT.desktop /usr/share/application
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;perl securecrt_linux_crack.pl /usr/bin/SecureCRT
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Virutalbox&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; virtualbox virtualbox-host-dkms
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; /sbin/rcvboxdrv setup
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;gpasswd &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$USER&lt;/span&gt; vboxusers
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;aria2&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;aria2 downloader.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /lib/systemd/system/aria2.service &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;EOF&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+[Unit]
+Description=Aria2c download manager
+After=network.target
+
+[Service]
+Type=simple
+User=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;
+ExecStart=/usr/bin/aria2c --conf-path=/home/&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;USER&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;/.aria2/aria2.conf
+
+[Install]
+WantedBy=multi-user.target
+&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;EOF
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;systemctl daemon-reload
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create your own &lt;em&gt;aria2.conf&lt;/em&gt;, you can google it for more in details.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;LNMP&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Install &lt;strong&gt;nginx&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; nginx-mainline
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Web username is http, while ubuntu web username is  www-data.&lt;/p&gt;
+
+&lt;p&gt;Install &lt;strong&gt;php&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; php php-fpm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install &lt;strong&gt;mysql&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Choose mariadb or percona.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; mariadb
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Create data directory&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;mkdir&lt;/span&gt; /data/mysql
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;chown &lt;/span&gt;mysql:mysql /data/mysql
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Change some settings in /etc/mysql/my.cnf.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# enable innodb&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/innodb_/ s/#//'&lt;/span&gt; /etc/mysql/my.cnf
+
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'s/no\-auto\-rehash/auto\-rehash/g'&lt;/span&gt; /etc/mysql/my.cnf
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/myisam_sort_buffer_size/a bind-address = 0.0.0.0'&lt;/span&gt; /etc/mysql/my.cnf
+
+&lt;span class=&quot;c&quot;&gt;# change to new data directory&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'/myisam_sort_buffer_size/a datadir = /data/mysql'&lt;/span&gt; /etc/mysql/my.cnf
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Initial database.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql_install_db &lt;span class=&quot;nt&quot;&gt;--user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mysql &lt;span class=&quot;nt&quot;&gt;--basedir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr &lt;span class=&quot;nt&quot;&gt;--datadir&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/data/mysql
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Start and enable msqld service.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;systemctl start mysqld
+systemctl &lt;span class=&quot;nb&quot;&gt;enable &lt;/span&gt;mysqld
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Set mysql root password.&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql_secure_installation
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;aur&quot;&gt;AUR&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://wiki.archlinux.org/index.php/Arch_User_Repository&quot;&gt;Arch User Repository&lt;/a&gt;，short as AUR,  provides another way to user install extra software, which is difficult to use. Thanks to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;yaourt&lt;/code&gt; , allows user to install AUR software easily like pacman.&lt;/p&gt;
+
+&lt;p&gt;Add &lt;em&gt;Yaourt&lt;/em&gt; warehouse, option.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;[archlinuxfr]&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;SigLevel = Never&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Server = http://repo.archlinux.fr/&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;arch&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;sudo tee&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /etc/pacman.conf  &lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;
+
+Requirement.
+
+​&lt;span class=&quot;sb&quot;&gt;```&lt;/span&gt;bash
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-Sy&lt;/span&gt; yaourt fakeroot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Install personal software.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; typora  &lt;span class=&quot;c&quot;&gt;# markdown editor&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; netease-cloud-music
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt teamviewer-beta
+
+&lt;span class=&quot;c&quot;&gt;# gnome themes&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; paper-gtk-theme-git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; gtk-theme-arc-git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;pacman &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; numix-gtk-theme
+
+&lt;span class=&quot;c&quot;&gt;# gnome icon&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; paper-icon-theme-git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; papirus-icon-theme-git
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ultra-flat-icons-blue
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ultra-flat-icons-green
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; ultra-flat-icons-orange
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;yaourt &lt;span class=&quot;nt&quot;&gt;-S&lt;/span&gt; fcitx-skins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;This post was a draft , ignore it pls 😂&lt;/p&gt;</content><author><name>GitHub User</name></author><category term="HowTo" /><summary type="html">Install Arch Linux step by step, making you understand Linux system more effectively.</summary></entry></feed>

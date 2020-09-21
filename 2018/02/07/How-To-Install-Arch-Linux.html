@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How To Install Arch Linux | ZshMobi</title>
+<meta name="generator" content="Jekyll v4.1.1">
+<meta property="og:title" content="How To Install Arch Linux">
+<meta name="author" content="GitHub User">
+<meta property="og:locale" content="en_US">
+<meta name="description" content="Install Arch Linux step by step, making you understand Linux system more effectively.">
+<meta property="og:description" content="Install Arch Linux step by step, making you understand Linux system more effectively.">
+<link rel="canonical" href="https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html">
+<meta property="og:url" content="https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html">
+<meta property="og:site_name" content="ZshMobi">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2018-02-07T00:00:00+00:00">
+<script type="application/ld+json">
+{"headline":"How To Install Arch Linux","dateModified":"2018-02-07T00:00:00+00:00","datePublished":"2018-02-07T00:00:00+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html"},"author":{"@type":"Person","name":"GitHub User"},"url":"https://zshmobi.com/2018/02/07/How-To-Install-Arch-Linux.html","description":"Install Arch Linux step by step, making you understand Linux system more effectively.","@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="shortcut icon" href="">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-noto-sans@0.0.72/index.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+  <!-- and it's easy to individually load additional languages -->
+  <script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/languages/go.min.js"></script>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <script src="/assets/js/main.js"></script><link type="application/atom+xml" rel="alternate" href="https://zshmobi.com/feed.xml" title="ZshMobi">
+<script>MathJax={"tex":{"inlineMath":[["$","$"],["\\(","\\)"]]},"svg":{"fontCache":"global"}}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <!-- identifier -->
+  <meta name="yandex-verification" content="d2b7b73728e5409e">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/">
+  <img class="site-favicon" title="ZshMobi" src="" onerror="this.style.display='none'">
+  ZshMobi
+</a>
+</span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/about.html">ABOUT</a><a class="page-link" href="/archives.html">ARCHIVES</a><a class="page-link" href="/categories.html">CATEGORIES</a><a class="page-link" href="/">HOME</a><a class="page-link" href="/tags.html">TAGS</a>
+
+
+
+
+<span class="page-link">
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="en">
+          
+          <img src="https://www.countryflags.io/us/flat/64.png" title="English">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="fr">
+          
+          <img src="https://www.countryflags.io/fr/flat/64.png" title="Franch">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="zh-CN">
+          
+          <img src="https://www.countryflags.io/cn/flat/64.png" title="Chinese(Simple)">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ja">
+          
+          <img src="https://www.countryflags.io/jp/flat/64.png" title="Japan">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ko">
+          
+          <img src="https://www.countryflags.io/kr/flat/64.png" title="Korean">
+          
+        </a>
+      </li>
+    
+      <li>
+        <a href="#" class="lang-select" data-lang="ru">
+          
+          <img src="https://www.countryflags.io/ru/flat/64.png" title="Russia">
+          
+        </a>
+      </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: '',
+    autoDisplay: false,
+    layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+  }, 'google_translate_element');
+
+  function restoreLang() {
+    var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+    if (!iframe) return;
+
+    var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+    var restore_el = innerDoc.getElementsByTagName("button");
+
+    for (var i = 0; i < restore_el.length; i++) {
+      if (restore_el[i].id.indexOf("restore") >= 0) {
+        restore_el[i].click();
+        var close_el = innerDoc.getElementsByClassName("goog-close-link");
+        close_el[0].click();
+        return;
+      }
+    }
+  }
+
+  function triggerHtmlEvent(element, eventName) {
+    var event;
+    if (document.createEvent) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(eventName, true, true);
+      element.dispatchEvent(event);
+    } else {
+      event = document.createEventObject();
+      event.eventType = eventName;
+      element.fireEvent('on' + event.eventType, event);
+    }
+  }
+
+  var googleCombo = document.querySelector("select.goog-te-combo");
+  var langSelect = document.querySelector('.ct-language');
+  langSelect.addEventListener('click', function(event) {
+    if (!event.target) {
+      return;
+    }
+
+    var selected = document.querySelector('.ct-language .ct-language-selected');
+    if (selected) {
+      selected.classList.remove('ct-language-selected');
+    }
+
+    var target = event.target;
+    while (target && target !== langSelect ) {
+      if (target.matches('.lang-select')) {
+        break;
+      }
+      target = target.parentElement;
+    }
+
+    if (target && target.matches('.lang-select')) {
+      var lang = target.getAttribute('data-lang');
+      if (googleCombo.value == lang) {
+        restoreLang();
+      } else {
+        target.parentElement.classList.add('ct-language-selected');
+        googleCombo.value = lang;
+        triggerHtmlEvent(googleCombo, 'change');
+      }
+    }
+
+    event.preventDefault();
+  });
+}
+</script>
+
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</span>
+</div>
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  (function() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  })();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.matches('a')) {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">How To Install Arch Linux</h1>
+  <h3 class="post-subtitle"></h3>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2018-02-07T00:00:00+00:00" itemprop="datePublished"><i class="fa fa-calendar"></i> 07 Feb 2018
+    </time>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> About 11 mins</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/tags.html#HowTo">#HowTo</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p>Install Arch Linux step by step, making you understand Linux system more effectively.</p>
+
+<!--more-->
+
+<h2 id="usb-disk">USB Disk</h2>
+
+<p>Recommend to use <code class="language-plaintext highlighter-rouge">dd</code> command create bootable usb, or other methods click <a href="https://wiki.archlinux.org/index.php/USB_flash_installation_media">Here</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">dd </span><span class="nv">bs</span><span class="o">=</span>4m <span class="k">if</span><span class="o">=</span>/path/to/archlinux.iso <span class="nv">of</span><span class="o">=</span>/dev/sdx <span class="o">&amp;&amp;</span> <span class="nb">sync</span>
+</code></pre></div></div>
+
+<h2 id="install-arch">Install Arch</h2>
+
+<blockquote>
+  <p>Read this <a href="https://wiki.archlinux.org/index.php/Installation_guide">installation guide</a> first !</p>
+</blockquote>
+
+<p>Check the boot type is UEFI or MBR.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># echo nothing means MBR</span>
+<span class="nv">$ </span><span class="nb">ls</span> /sys/firmware/efi/efivars
+</code></pre></div></div>
+
+<p>Make sure network is OK.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ping <span class="nt">-c</span> 5 www.so.com
+</code></pre></div></div>
+
+<p>Use wifi network,  <code class="language-plaintext highlighter-rouge">recommend to use wire network</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c"># connect to wifi network</span>
+<span class="nv">$ </span>wifi-menu
+</code></pre></div></div>
+
+<p>Enable ssh service to remote control.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl start sshd
+</code></pre></div></div>
+
+<p>Set timezone and time rsync.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>timedatectl set-ntp <span class="nb">true</span>
+<span class="nv">$ </span>timedatectl set-timezone Asia/Shanghai
+</code></pre></div></div>
+
+<p>Set most fast pacman mirrors</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pacman-mirror <span class="nt">--country</span> <span class="s1">'China'</span>
+</code></pre></div></div>
+
+<p>Then  <code class="language-plaintext highlighter-rouge">disk management</code></p>
+
+<p>Check disk partition.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>lsblk /dev/sdx
+</code></pre></div></div>
+
+<p>Use <code class="language-plaintext highlighter-rouge">fdisk</code> command to manage your paritions.</p>
+
+<blockquote>
+  <p>Sectors formula：1024 x 1024 x 1024 / 512 x Gigabyte = total sectors numbers.</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>fdisk <span class="nt">-l</span> /dev/sda
+Disk /dev/sda: 931.5 GiB, 1000204886016 bytes, 1953525168 sectors
+Units: sectors of 1 <span class="k">*</span> 512 <span class="o">=</span> 512 bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: 512 bytes / 4096 bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: 4096 bytes / 4096 bytes
+Disklabel <span class="nb">type</span>: dos
+Disk identifier: 0x73c4c07a
+
+<span class="c"># use man fdisk for how to create a new partition.</span>
+</code></pre></div></div>
+
+<p>Also you can use  <code class="language-plaintext highlighter-rouge">cfdisk</code> , which is more humanity.</p>
+
+<p><code class="language-plaintext highlighter-rouge">UEFI</code>  mode need a <em>ESP</em> partition ，click <a href="https://wiki.archlinux.org/index.php/EFI_System_Partition">here</a>  for more in details.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>mkfs.vfat /dev/sda1
+<span class="nv">$ </span>mount /dev/sda1 /mnt/boot
+</code></pre></div></div>
+
+<p>Format new partitions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># /dev/sda1  /</span>
+<span class="c"># /dev/sda2  /home</span>
+<span class="c"># /dev/sda3  swap</span>
+<span class="nv">$ </span>mkfs.ext4 /dev/sda1
+<span class="nv">$ </span>mkfs.ext4 /dev/sda2
+<span class="nv">$ </span>mkswap /dev/sda3
+</code></pre></div></div>
+
+<p>Mount partitions.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>swapon /dev/sda3
+
+<span class="c"># Make sure mount / first.</span>
+<span class="nv">$ </span>mount /dev/sda1/ /mnt
+<span class="nv">$ </span><span class="nb">mkdir</span> /mnt/home <span class="o">&amp;&amp;</span> mount /dev/sda2 /mnt/home
+
+<span class="c"># Check the mount details.</span>
+<span class="nv">$ </span>lsblk <span class="nt">-f</span>
+</code></pre></div></div>
+
+<p>Install target system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># WIFI network needs these, iw dialog wpa_supplicant wpa_actiond</span>
+<span class="nv">$ </span>pacstrap /mnt base base-devel
+</code></pre></div></div>
+
+<p>Generate fstab to target system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>genfstab <span class="nt">-U</span> /mnt <span class="o">&gt;&gt;</span> /mnt/etc/fstab
+</code></pre></div></div>
+
+<p>Switch to the target system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>arch-chroot /mnt /bin/bash
+</code></pre></div></div>
+
+<p>Set timezone and local time.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">ln</span> <span class="nt">-sf</span> /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+<span class="nv">$ </span>hwclock <span class="nt">--systohc</span> <span class="nt">--utc</span>
+</code></pre></div></div>
+
+<p>Set language.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>locale-gen
+
+<span class="nv">$ </span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/zh_CN\.UTF\-8/ s/#//'</span> /etc/locale.gen
+<span class="nv">$ </span><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/en_US\.UTF\-8/ s/#//'</span> /etc/locale.gen
+<span class="nv">$ </span>locale-gen
+
+<span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;</span> /etc/locale.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+LANG=en_US.UTF-8
+LC_CTYPE=zh_CN.UTF-8
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<p>Set hostname and hosts.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># hostname</span>
+<span class="nv">$ </span><span class="nb">echo</span> <span class="s1">'JeffArch'</span> <span class="o">&gt;</span> /etc/hostname
+
+<span class="c"># hosts</span>
+<span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;</span> /etc/hosts <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+127.0.0.1 localhost
+::1       localhost
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<p>Set root password.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>passwd root
+</code></pre></div></div>
+
+<p>Install grub.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># os-prober uses for dual-system</span>
+<span class="nv">$ </span>pacman <span class="nt">-S</span> grub os-prober
+</code></pre></div></div>
+
+<p>Install grub to disk.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># MBR mode without sda partition number</span>
+<span class="nv">$ </span>grub-install <span class="nt">--target</span><span class="o">=</span>i386-pc /dev/sda <span class="nt">--recheck</span>
+
+<span class="c"># UEFI mode， mount 512M esp partition to /boot</span>
+<span class="nv">$ </span>pacman <span class="nt">-S</span> efibootmgr dosfstools
+<span class="nv">$ </span>grub-install <span class="nt">--target</span><span class="o">=</span>x86_64-efi <span class="nt">--efi-directory</span><span class="o">=</span>/boot <span class="nt">--bootloader-id</span><span class="o">=</span>grub <span class="nt">--recheck</span>
+</code></pre></div></div>
+
+<p>Generate grub configuration.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># system can not boot without this action</span>
+<span class="nv">$ </span>grub-mkconfig <span class="nt">-o</span> /boot/grub/grub.cfg
+</code></pre></div></div>
+
+<p>Enable dhcp client service.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>systemctl <span class="nb">enable </span>dhcpcd
+</code></pre></div></div>
+
+<p>Exit target system.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>Umount target system and reboot computer.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>umount <span class="nt">-R</span> /mnt <span class="o">&amp;&amp;</span> reboot
+</code></pre></div></div>
+
+<p>Remember to remove usb disk.</p>
+
+<h2 id="initial-system">Initial System</h2>
+
+<blockquote>
+  <p>Read this <a href="https://wiki.archlinux.org/index.php/General_recommendations">catalogue</a> first !</p>
+</blockquote>
+
+<p>Login as root and create a new normal user for daily management.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>useradd <span class="nt">-m</span> <span class="nt">-G</span> wheel <span class="nt">-s</span> /bin/bash jeff
+<span class="nv">$ </span>passwd jeff
+</code></pre></div></div>
+
+<p>Enable <code class="language-plaintext highlighter-rouge">sudo</code> function to the new user.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="s2">"%jeff ALL=(ALL:ALL) NOPASSWD:ALL"</span> <span class="o">&gt;</span> /etc/sudoers.d/jeff
+<span class="nv">$ </span><span class="nb">chmod </span>600 /etc/sudoers.d/jeff
+</code></pre></div></div>
+
+<p>Install extra fonts.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># google open source fonts</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> noto-fonts noto-fonts-cjk noto-fonts-emoji
+
+<span class="c"># wenquanyi</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> wqy-microhei wqy-zenhei
+
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> ttf-dejavu
+
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> ttf-win7-fonts ttf-office-2007-fonts
+
+<span class="c"># monaco fonts</span>
+</code></pre></div></div>
+
+<p>Install display server，which I chose here is <a href="https://wiki.archlinux.org/index.php/Xorg">Xorg</a>. You can not run desktop environment without it.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xorg <span class="c"># choose the default vaules</span>
+</code></pre></div></div>
+
+<p>Install graphical driver，vesa is default，others can click  <a href="https://wiki.archlinux.org/index.php/ATI">ATI</a> 、<a href="https://wiki.archlinux.org/index.php/Intel_graphics">Intel</a> 、<a href="https://wiki.archlinux.org/index.php/NVIDIA">Nvidia</a>.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check what your graphic driver is</span>
+<span class="nv">$ </span>lspci | <span class="nb">grep </span>VGA
+
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xf86-video-vesa <span class="c"># default</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xf86-video-ati  <span class="c"># AMD</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xf86-video-intel  <span class="c"># intel</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xf86-video-nouveau  <span class="c"># nvidia</span>
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> virtualbox-guest-utils <span class="c"># virtualbox</span>
+</code></pre></div></div>
+
+<p>Install <a href="https://wiki.archlinux.org/index.php/Display_manager">Display Manager</a>，here as shown：</p>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">gdm</code> for <em>GNOME</em> desktop.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">sddm</code>  for KDE desktop.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">lightDM</code>  for Cross-desktop display manager, like ubuntu unity desktop.</li>
+</ol>
+
+<p>Install <a href="https://wiki.archlinux.org/index.php/Desktop_environment">Desktop environment</a>，choose one of your faviour.  <br>
+<em>Gnome Desktop</em></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> gnome gnome-extras
+</code></pre></div></div>
+
+<p><em>xfce4 Desktop</em></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> xfce4 xfce4-goodies sddm
+</code></pre></div></div>
+
+<p><em>KDE Desktop</em></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> plasma kde-applications-meta sddm kde-l10n-zh_cn
+</code></pre></div></div>
+
+<p><em>KDE Minimal Desktop</em></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> plasma dolphin kate konsole sddm kde-l10n-zh_cn
+</code></pre></div></div>
+
+<p>Enable display server auto run when system boot up.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>gdm <span class="c"># or sddm or lightDM</span>
+</code></pre></div></div>
+
+<p>Install input method, either Ibus or fcitx.</p>
+
+<ul>
+  <li><a href="https://wiki.archlinux.org/index.php/IBus">Ibus</a></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> ibus
+
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> ibus-qt
+
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> ibus-rime
+
+<span class="nv">$ </span>ibus-setup
+
+<span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;&gt;</span> ~/.bashrc <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+</span><span class="no">EOF
+</span></code></pre></div></div>
+
+<ul>
+  <li><a href="https://wiki.archlinux.org/index.php/Fcitx">Fcitx</a></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> fcitx fcitx-rime fcitx-configtool fcitx-gtk3 fcitx-gtk2 fcitx-qt5
+
+<span class="nv">$ </span>fcitx-config-gtk3
+
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"GTK_IM_MODULE=fcitx</span><span class="se">\n</span><span class="s2">QT_IM_MODULE=fcitx</span><span class="se">\n</span><span class="s2">XMODIFIERS=@im=fcitx"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/environment
+</code></pre></div></div>
+
+<p>Now reboot new system and login it again to the desktop environment.</p>
+
+<h2 id="software">Software</h2>
+
+<p>Recommend these software as shown here.</p>
+
+<p>Basic software</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pacman <span class="nt">-S</span> wget zsh w3m curl openssh <span class="nb">sudo </span>terminator proxychains vim fakeroot net-tools gparted zip unzip unrar tree ntfs-3g yajl ufw archey3 cronie git
+</code></pre></div></div>
+
+<p>Multiply media software</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>pacman <span class="nt">-S</span> gedit remmina libvncserver freerdp smplayer smplayer-themes qbittorrent chromium mkvtoolnix-cli mkvtoolnix-gui aegisub subtitleeditor firefox extra/firefox-i18n-zh-cn telegram-desktop chromium
+</code></pre></div></div>
+
+<ul>
+  <li><strong>SecureCRT</strong></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># download the tar file yourself</span>
+<span class="nv">$ </span><span class="nb">tar</span> <span class="nt">-xf</span> scrt-8.1.4.1443.ubuntu16-64.tar.gz
+<span class="nv">$ </span><span class="nb">sudo mv </span>scrt-8.1.4 /usr/local/
+<span class="nv">$ </span><span class="nb">sudo ln</span> <span class="nt">-s</span> /usr/local/scrt-8.1.4/SecureCRT /usr/bin/SecureCRT
+<span class="nv">$ </span><span class="nb">sudo cp</span> /usr/local/scrt-8.1.4/SecureCRT.desktop /usr/share/application
+<span class="nv">$ </span><span class="nb">sudo </span>perl securecrt_linux_crack.pl /usr/bin/SecureCRT
+</code></pre></div></div>
+
+<ul>
+  <li><strong>Virutalbox</strong></li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> virtualbox virtualbox-host-dkms
+<span class="nv">$ </span><span class="nb">sudo</span> /sbin/rcvboxdrv setup
+<span class="nv">$ </span><span class="nb">sudo </span>gpasswd <span class="nt">-a</span> <span class="nv">$USER</span> vboxusers
+</code></pre></div></div>
+
+<ul>
+  <li><strong>aria2</strong></li>
+</ul>
+
+<p>aria2 downloader.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">cat</span> <span class="o">&gt;</span> /lib/systemd/system/aria2.service <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+[Unit]
+Description=Aria2c download manager
+After=network.target
+
+[Service]
+Type=simple
+User=</span><span class="k">${</span><span class="nv">USER</span><span class="k">}</span><span class="sh">
+ExecStart=/usr/bin/aria2c --conf-path=/home/</span><span class="k">${</span><span class="nv">USER</span><span class="k">}</span><span class="sh">/.aria2/aria2.conf
+
+[Install]
+WantedBy=multi-user.target
+</span><span class="no">EOF
+
+</span><span class="nv">$ </span>systemctl daemon-reload
+</code></pre></div></div>
+
+<p>Create your own <em>aria2.conf</em>, you can google it for more in details.</p>
+
+<ul>
+  <li><strong>LNMP</strong></li>
+</ul>
+
+<p>Install <strong>nginx</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> nginx-mainline
+</code></pre></div></div>
+
+<p>Web username is http, while ubuntu web username is  www-data.</p>
+
+<p>Install <strong>php</strong></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> php php-fpm
+</code></pre></div></div>
+
+<p>Install <strong>mysql</strong></p>
+
+<p>Choose mariadb or percona.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-S</span> mariadb
+</code></pre></div></div>
+
+<p>Create data directory</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">mkdir</span> /data/mysql
+<span class="nv">$ </span><span class="nb">chown </span>mysql:mysql /data/mysql
+</code></pre></div></div>
+
+<p>Change some settings in /etc/mysql/my.cnf.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># enable innodb</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/innodb_/ s/#//'</span> /etc/mysql/my.cnf
+
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/no\-auto\-rehash/auto\-rehash/g'</span> /etc/mysql/my.cnf
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/myisam_sort_buffer_size/a bind-address = 0.0.0.0'</span> /etc/mysql/my.cnf
+
+<span class="c"># change to new data directory</span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'/myisam_sort_buffer_size/a datadir = /data/mysql'</span> /etc/mysql/my.cnf
+</code></pre></div></div>
+
+<p>Initial database.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql_install_db <span class="nt">--user</span><span class="o">=</span>mysql <span class="nt">--basedir</span><span class="o">=</span>/usr <span class="nt">--datadir</span><span class="o">=</span>/data/mysql
+</code></pre></div></div>
+
+<p>Start and enable msqld service.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start mysqld
+systemctl <span class="nb">enable </span>mysqld
+</code></pre></div></div>
+
+<p>Set mysql root password.</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql_secure_installation
+</code></pre></div></div>
+
+<h2 id="aur">AUR</h2>
+
+<p><a href="https://wiki.archlinux.org/index.php/Arch_User_Repository">Arch User Repository</a>，short as AUR,  provides another way to user install extra software, which is difficult to use. Thanks to <code class="language-plaintext highlighter-rouge">yaourt</code> , allows user to install AUR software easily like pacman.</p>
+
+<p>Add <em>Yaourt</em> warehouse, option.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span><span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"[archlinuxfr]</span><span class="se">\n</span><span class="s2">SigLevel = Never</span><span class="se">\n</span><span class="s2">Server = http://repo.archlinux.fr/</span><span class="se">\$</span><span class="s2">arch</span><span class="se">\n</span><span class="s2">"</span> | <span class="nb">sudo tee</span> <span class="nt">-a</span> /etc/pacman.conf  <span class="sb">```</span>
+
+Requirement.
+
+​<span class="sb">```</span>bash
+<span class="nv">$ </span><span class="nb">sudo </span>pacman <span class="nt">-Sy</span> yaourt fakeroot
+</code></pre></div></div>
+
+<p>Install personal software.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>yaourt <span class="nt">-S</span> typora  <span class="c"># markdown editor</span>
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> netease-cloud-music
+<span class="nv">$ </span>yaourt teamviewer-beta
+
+<span class="c"># gnome themes</span>
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> paper-gtk-theme-git
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> gtk-theme-arc-git
+<span class="nv">$ </span>pacman <span class="nt">-S</span> numix-gtk-theme
+
+<span class="c"># gnome icon</span>
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> paper-icon-theme-git
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> papirus-icon-theme-git
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> ultra-flat-icons-blue
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> ultra-flat-icons-green
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> ultra-flat-icons-orange
+<span class="nv">$ </span>yaourt <span class="nt">-S</span> fcitx-skins
+</code></pre></div></div>
+
+<h2 id="summary">Summary</h2>
+
+<p>This post was a draft , ignore it pls 😂</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<span></span><a class="next" href="/2019/02/18/How-To-Use-Iptables.html" title="How To Use Iptables">How To Use Iptables</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li><a class="post-link" href="/2019/10/26/When-the-camellia-blooms.html" title="How To Use Iptables">When the Camellia Blooms</a></li>
+<li><a class="post-link" href="/2020/03/14/How-To-Load-Apache-Module-In-Qnap.html" title="How To Use Iptables">How To Load Apache Proxy Module in Qnap</a></li>
+<li><a class="post-link" href="/2019/09/27/How-To-Deploy-DNS-Master-Slave-Service.html" title="How To Use Iptables">How To Deploy DNS Master-Slave Service</a></li>
+<li><a class="post-link" href="/2018/02/07/How-To-Install-Arch-Linux.html" title="How To Use Iptables">How To Install Arch Linux</a></li>
+</ul>
+    </div>
+<div class="post-comments"></div></section>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">TOC</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items=20) {
+      var items = menuContent.firstChild.children;
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+      <div>Copyright © 1970-2020 @GitHub User</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="http://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+      <div class="footer-col rss-subscribe">Subscribe <a href="/feed.xml">via RSS</a>
+</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
